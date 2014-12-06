@@ -165,7 +165,6 @@ class ApiController {
 
             } catch (\Exception $e) {
                 error_log("Exception while handling packet: " . $e);
-
                 $this->stat_increment($redis, $today, "error");
                 $responses = array_merge($responses, array(array(
                     'type' => 'error',

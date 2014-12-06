@@ -218,6 +218,9 @@ class CrashesService extends BaseService {
                     'modIds' => $involvedModIds,
                     'content' => 'New crash! ' . self::reduceMessageForIRC($stackWithoutSignatures['exception'] . ': ' . $stackWithoutSignatures['message']) . ' - http://openeye.openmods.info/crashes/' . $packet['stackhash']
                 )));
+
+                $today = @date("Y-m-d");
+                $redis->hincrby($today, "new_crashes", 1);
             }
         } else {
 

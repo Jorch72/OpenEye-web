@@ -108,9 +108,13 @@ abstract class SignaturesBase implements IPacketHandler {
             }
         }
 
-        if (count($newFilenames) > 0) {
+        $newFileCount = count($newFilenames);
+        if ($newFileCount > 0) {
             $redis = new \Predis\Client();
             $redis->publish('file', implode(", ", $newFilenames));
+
+            $today = @date("Y-m-d");
+            $redis->hincrby($today, "new_files", $newFileCount);
         }
 
         return $responses;
