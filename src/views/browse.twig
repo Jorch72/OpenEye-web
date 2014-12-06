@@ -20,10 +20,10 @@
         <li{% if table is defined and table == 'common_crashes' %} class="active"{% endif %}><a href="{{ relative('browse/common_crashes') }}">Common Crashes</a></li>
         <li{% if table is defined and table == 'packages' %} class="active"{% endif %}><a href="{{ relative('browse/packages') }}">Packages</a></li>
       </ul>
-    </div>    
-    <div class="col-md-10"> 
+    </div>
+    <div class="col-md-10">
         {% if total is defined and total > 0 %}
-            <h3>Showing {{ total|number_format(0, '.', ',') }} result{% if total > 1 %}s{% endif %}</h3>    
+            <h3>Showing {{ total|number_format(0, '.', ',') }} result{% if total > 1 %}s{% endif %}</h3>
         {% endif %}
         {% if page_count is defined and page_count > 2 %}
             {% set from = max(1, current_page - 8) %}
@@ -38,8 +38,8 @@
         {% endif %}
         {% if results is defined %}
         {% for result in results %}
-        <pre><code>{{ result|json_encode(constant('JSON_PRETTY_PRINT')  b-or constant('JSON_UNESCAPED_SLASHES')) }}</code></pre>     
-        {% endfor %}       
+        <pre><code>{{ result|json_encode(constant('JSON_PRETTY_PRINT')  b-or constant('JSON_UNESCAPED_SLASHES')) }}</code></pre>
+        {% endfor %}
         {% endif %}
         {% if page_count is defined and page_count > 2 %}
         <ul class="pagination">

@@ -98,7 +98,7 @@ class ApiController {
         $raw_size = strlen($content);
         if ($raw_size > 1024 * 1024) {
             error_log("Big message: " . $raw_size);
-            if ($raw_size > 10 * 1024 * 1024) {
+            if ($raw_size > 20 * 1024 * 1024) {
                 error_log("Too much, man, too much! aborting");
                 return $this->error_response("I just can't your data");
             }
@@ -125,7 +125,6 @@ class ApiController {
                     $packet['type'] : null;
 
             try {
-
                 if ($type == null) {
                     throw new \Exception('Packet type not defined');
                 }
@@ -164,9 +163,8 @@ class ApiController {
             }
 
             $index++;
-            // EMERGENCY HACK -boq
-            if ($index > 1024)
-            {
+
+            if ($index > 2048) {
                 error_log("Too much entries in packet: " .  count($data));
                 break;
             }

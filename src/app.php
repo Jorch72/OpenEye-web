@@ -9,6 +9,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Silex\Provider\FormServiceProvider;
 
+
 date_default_timezone_set('Etc/UTC');
 
 define("ROOT_PATH", __DIR__ . "/..");
@@ -34,10 +35,10 @@ $app->after(function (Request $request, Response $response) use ($app, $time_sta
     $time_end = microtime(true);
     $timeTaken = $time_end - $time_start;
     if ($timeTaken > 20) {
-        $slow_report = fopen(ROOT_PATH . "/storage/slow-logs/" . date('Y-m-d') . ".log", "a");
+        $slow_report = fopen(ROOT_PATH . '/storage/slow-logs/' . date('Y-m-d') . '.log', 'a');
         try {
-            $current_date = date("Y-m-d H:i:s");
-            fwrite($slow_report, "[{$current_date}] {$response->getClientIp()} {$timeTaken}\n");
+            $current_date = date('Y-m-d H:i:s');
+            fwrite($slow_report, "[{$current_date}] {$request->getClientIp()} {$timeTaken}\n");
             fwrite($slow_report, $request->get('api_request', '[]'));
             fwrite($slow_report, "\n");
         } catch (\Exception $e) {
@@ -55,7 +56,6 @@ $app->before(function (Request $request) use ($app) {
         if (0 === strpos($request->headers->get('Content-Encoding'), 'gzip')) {
                $content = @gzinflate(substr($content, 10, -8));
         }
-        // no idea what it was doing here? JSON was parsed in controller too
         //$data = json_decode($content, true);
         //$request->request->replace(is_array($data) ? $data : array());
         $request->request->set('api_request', $content);

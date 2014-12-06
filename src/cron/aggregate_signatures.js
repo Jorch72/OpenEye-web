@@ -73,7 +73,6 @@ MongoClient.connect(connectionString, function (err, db) {
             }
 
             this.signatures.forEach(function (signature) {
-
                 result['added'] = self.addedSignatures.indexOf(signature.signature) > -1 ? 1 : 0;
                 result['removed'] = self.removedSignatures.indexOf(signature.signature) > -1 ? 1 : 0;
 

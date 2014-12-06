@@ -8,7 +8,7 @@
     </div>
     <div class="col-md-3 pull-right" id="floatbar">
         <div id="sidenav" data-spy="affix" data-offset-top="90">
-            
+
           <strong>Find by:</strong>
           <ul class="nav nav-home nav-home-stacked">
                 <li><a href="{{ relative('') }}">Popular mods</a></li>
@@ -40,12 +40,12 @@
             <li{% if disableNext %} class="disabled"{%endif %}><a href="{% if disableNext %}#{% else %}?page={{ current_page + 1 }}{% endif %}">&raquo;</a></li>
         </ul>
         {% endif %}
-        
+
         {% for row in mods|batch(2) %}
             <div class="row" style="margin: 30px 0;">
                 {% for mod in row %}
                     <div class="col-md-6">
-                        
+
                         <div class="media">
                           {% if mod.unlisted is defined %}
                             <img src="{% if mod.image is defined %}{{ relative(mod.image) }}{% else %}{{ relative('modimages/grass.png') }}{% endif %}" alt="" class="pull-left">
@@ -60,13 +60,13 @@
                             {% if mod.tags is defined and mod.tags|length > 0 %}
                               <p>
                                 {% for tag in mod.tags %}
-                                    <span class="label label-info">{{ tag }}</span> 
+                                    <span class="label label-info">{{ tag }}</span>
                                 {% endfor %}
                               </p>
                             {% endif %}
                           </div>
                         </div>
-                        
+
                     </div>
                 {% endfor %}
             </div>
@@ -81,8 +81,8 @@
             <li{% if disableNext %} class="disabled"{%endif %}><a href="{% if disableNext %}#{% else %}?page={{ current_page + 1 }}{% endif %}">&raquo;</a></li>
         </ul>
         {% endif %}
-        
-        
+
+
     </div>
 </div>
 {% endblock %}

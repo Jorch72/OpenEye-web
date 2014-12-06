@@ -22,7 +22,7 @@ MongoClient.connect(connectionString, function(err, db) {
         time.setMilliseconds(0);
         var endTime = Math.floor(time.getTime() / 1000);
         var startTime = endTime - (60 * 60);
-      
+
         if (this.signatures == null || this.signatures.length == 0) {
         return;
         }
@@ -117,7 +117,7 @@ MongoClient.connect(connectionString, function(err, db) {
               console.log('ok WE GOT RESULTS');
               console.log(results);
           }
-          
+
         db.collection('analytics').remove(
             {
                 created_at: {'$gte' : startTime, '$lt' : endTime }
@@ -126,7 +126,7 @@ MongoClient.connect(connectionString, function(err, db) {
                 db.close();
             }
         );
-        
+
         //db.close();
        }
     )

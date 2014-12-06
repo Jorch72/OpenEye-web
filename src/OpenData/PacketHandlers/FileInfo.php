@@ -5,15 +5,15 @@ namespace OpenData\PacketHandlers;
 use OpenData\Services\ModsService;
 
 class FileInfo implements IPacketHandler {
-    
+
     private $serviceFiles;
     private $serviceMods;
-    
+
     public function __construct($files, $mods) {
         $this->serviceFiles = $files;
         $this->serviceMods = $mods;
     }
-    
+
     public function getJsonSchema() {
         return 'file_info.json';
     }
@@ -21,11 +21,11 @@ class FileInfo implements IPacketHandler {
     public function getPacketType() {
         return 'file_info';
     }
-    
+
     public function execute($packet) {
-                
+
         $this->serviceFiles->append($packet);
-        
+
         if (isset($packet['mods'])) {
             foreach ($packet['mods'] as $mod) {
                 if (empty($mod['parent'])) {
@@ -44,5 +44,5 @@ class FileInfo implements IPacketHandler {
         }
     }
 
-    
+
 }

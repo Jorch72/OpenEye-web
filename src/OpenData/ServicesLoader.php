@@ -9,14 +9,13 @@ class ServicesLoader {
     public $app;
 
     public function __construct(Application $app) {
-
         $this->app = $app;
     }
 
     public function bindServicesIntoContainer() {
 
         $loader = $this;
-        
+
         $this->app['crashes.service'] = $this->app->share(function () use ($loader) {
             return new Services\CrashesService($loader->app["mongo"]);
         });
@@ -32,7 +31,7 @@ class ServicesLoader {
         $this->app['tags.service'] = $this->app->share(function () use ($loader) {
             return new Services\TagsService($loader->app["mongo"]);
         });
-        
+
         $this->app['handler.analytics'] = $this->app->share(function () use ($loader) {
             return new PacketHandlers\Analytics(
                 $loader->app["analytics.service"],
@@ -40,18 +39,18 @@ class ServicesLoader {
                 $loader->app["tags.service"]
             );
         });
-        
+
         $this->app['handler.ping'] = $this->app->share(function () {
             return new PacketHandlers\Ping();
         });
-        
+
         $this->app['handler.fileinfo'] = $this->app->share(function () use ($loader) {
             return new PacketHandlers\FileInfo(
                 $loader->app["files.service"],
                 $loader->app["mods.service"]
             );
         });
-        
+
         $this->app['handler.crashlog'] = $this->app->share(function () use ($loader) {
             return new PacketHandlers\CrashLog(
                 $loader->app["crashes.service"],
@@ -59,7 +58,7 @@ class ServicesLoader {
                 $loader->app["mods.service"]
             );
         });
-        
+
         $this->app['handler.filelist'] = $this->app->share(function () use ($loader) {
             return new PacketHandlers\FileList(
                 $loader->app["files.service"]

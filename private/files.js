@@ -104,7 +104,7 @@ function addNote(context) {
 }
 function setVersion(context) {
 
-    
+
     if (!context.isOp) {
         context.bot.say(
             context.channel,

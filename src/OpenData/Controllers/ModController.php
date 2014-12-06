@@ -10,53 +10,57 @@ class ModController {
     private $serviceFiles;
     private $serviceMods;
     private $twig;
+    private $app;
 
-    public function __construct($twig, $files, $mods, $analytics) {
+    public function __construct($twig, $app, $files, $mods, $analytics) {
+        $this->app = $app;
         $this->twig = $twig;
         $this->serviceFiles = $files;
         $this->serviceMods = $mods;
         $this->serviceAnalytics = $analytics;
     }
 
-
-    
     public function find(Request $request) {
-        
+
         $query = $request->get('q');
         if ($query == null) {
             return new JsonResponse(array());
         }
-        
+
         $modNames = array();
-        
+
         $results = $this->serviceMods->findByRegex($request->get('q'), false);
         $results->sort(array(
             'name' => 1
         ));
-        
+
         foreach ($results as $mod) {
             $modNames[] = $mod['name'];
         }
-        
+
         return new JsonResponse($modNames);
     }
-    
+
     public function modinfo($modId) {
 
         $modInfo = $this->serviceMods->findById($modId);
-        
-        if ($modInfo == null || (isset($modInfo['unlisted']) && $modInfo['unlisted'] === true)) {
-            throw new \Exception();
+
+        if ($modInfo == null) {
+            $this->app->abort(404, "Modid not found");
         }
-        
+
+        if (isset($modInfo['unlisted']) && $modInfo['unlisted'] === true) {
+            $this->app->abort(403, "Mod hidden per author request");
+        }
+
         $files = $this->serviceFiles->findByModId($modId);
 
         $numFiles = $files->count();
-        
+
         if ($numFiles == 0) {
-            throw new \Exception();
+            $this->app->abort(404, "Modid not found");
         }
-        
+
         $versions = array();
 
         foreach ($files as $file) {
@@ -70,15 +74,15 @@ class ModController {
                 }
             }
         }
-        
+
         uksort($versions, 'version_compare');
         $versions = array_reverse($versions, true);
-        
+
         $versionGroup = "(^[0-9]+\.[0-9]+\.[0-9]+)(.*)";
         if (isset($modInfo['versionGroup'])) {
             $versionGroup = $modInfo['versionGroup'];
         }
-        
+
         $groupedVersions = array();
         foreach ($versions as $version => $files) {
             $version = preg_replace("@".$versionGroup."@", "$1", $version);
@@ -87,7 +91,7 @@ class ModController {
             }
             $groupedVersions[$version] = array_merge($groupedVersions[$version], $files);
         }
-        
+
         return $this->twig->render('mod.twig', array(
             'versions' => $groupedVersions,
             'modInfo' => $modInfo
@@ -95,24 +99,24 @@ class ModController {
     }
 
     public function fileinfo($fileId) {
-        
+
         $file = $this->serviceFiles->findOne($fileId);
-        
+
         if ($file == null) {
-            throw new \Exception();
+            $this->app->abort(404, "File not found");
         }
-        
+
         return $this->twig->render('file.twig', array(
             'file' => $file
         ));
     }
-    
+
     public function analytics($modId, $fileId = null) {
-        
+
         $today = strtotime(date("Y-m-d 00:00:00"));
         $yesterday = $today - 86400;
-        $oYesterday = new \MongoDate($yesterday);
-        
+    $oYesterday = new \MongoDate($yesterday);
+
         $signatures = array();
         if ($fileId != null) {
             if ($this->serviceFiles->findOne($fileId) != null) {
@@ -127,7 +131,7 @@ class ModController {
                 $signatures[] = $file['_id'];
             }
         }
-        
+
         $results = array();
         if (count($signatures) > 0) {
             $results = $this->serviceAnalytics->findBy(array(
@@ -137,20 +141,20 @@ class ModController {
                '_id.time' => array('$gte' => $oYesterday)
             ));
         }
-        
+
         $hourly = array();
-        
+
         foreach ($results as $hour) {
             $hourly[$hour['_id']['time']->sec] = $hour['launches'];
         }
-                
+
         $lastHour = strtotime(date("Y-m-d H:00:00"));
-        
+
         $hourlyStats = array(
             'today' => array(),
             'yesterday' => array()
         );
-        
+
         foreach ($hourlyStats as $day => $v) {
             for ($i = 0; $i < 24; $i++) {
                 $displayTime = ($lastHour - ($i * 3600));
@@ -161,10 +165,10 @@ class ModController {
                 $hourlyStats[$day][] = array(
                     $displayTime * 1000,
                     isset($hourly[$statTime]) ? $hourly[$statTime] : 0
-                ); 
+                );
             }
         }
-        
+
         return $this->twig->render('mod_analytics.twig', array(
             'hourly' => array(
                 array('label' => '&nbsp;&nbsp;Past 24 hours', 'data' => $hourlyStats['today']),
@@ -172,7 +176,7 @@ class ModController {
             )
         ));
     }
-    
+
     public function crashes($modId, $fileId = null) {
         $signatures = array();
         if ($fileId == null) {
@@ -182,9 +186,9 @@ class ModController {
         } else {
             $signatures[] = $fileId;
         }
-        
+
         $crashes = $this->serviceCrashes->findUniqueBySignatures($signatures);
-        
+
         return $this->twig->render('mod_crashes.twig', array(
             'crashes' => $crashes
         ));

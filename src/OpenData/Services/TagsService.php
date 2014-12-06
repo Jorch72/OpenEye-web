@@ -8,6 +8,6 @@ namespace OpenData\Services;
  * @author Mike Franklin <mike.franklin@naturalmotion.com>
  */
 class TagsService extends BaseService {
-    
-    
+
+
 }

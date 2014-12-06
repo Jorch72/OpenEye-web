@@ -14,8 +14,6 @@ Array.prototype.remove = function() {
     return this;
 };
 
-
-
 var validFields = [
     'name', 'description', 'url',
     'donation', 'authors', 'releasesPage',

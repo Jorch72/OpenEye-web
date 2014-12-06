@@ -158,7 +158,7 @@ MongoClient.connect(connectionString, function(err, db) {
     });
 
     bot.connect(10, function() {
-       bot.say('nickserv', 'identify OpenEye ' + password);
+       bot.say('nickserv', 'identify MissOpenEye ' + password);
     });
 
     redisClient.on('message', function (channel, message) {

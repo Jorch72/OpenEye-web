@@ -9,7 +9,7 @@ class BrowseController {
     private $twig;
     private $mongo;
     private $mongo_analytics;
-    
+
     private static $TABLES = array(
         'analytics',
         'crashes',
@@ -25,7 +25,7 @@ class BrowseController {
         $connections = $mongo;
         $conn = $connections['default'];
         $this->mongo = $conn->hopper;
-        
+
         $analyticsConn = $mongo['analytics'];
         $analyticsConn->connect();
         $this->mongo_analytics = $analyticsConn->analytics;
@@ -43,7 +43,7 @@ class BrowseController {
 
         if ($table == 'analytics') {
             $iterator = $this->mongo_analytics->analytics_signatures->find();
-        } else {     
+        } else {
             $iterator = $this->mongo->$table->find();
         }
         $page = $request->get('page', 1);

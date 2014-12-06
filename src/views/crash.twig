@@ -9,17 +9,17 @@
             <div>
                 {% if crash.side is defined %}
                     {% for side in crash.side %}
-                        <span class="label label-primary">{{ side }}</span> 
+                        <span class="label label-primary">{{ side }}</span>
                     {% endfor %}
                 {% endif %}
                 {% if crash.tags is defined and crash.tags|length > 0 %}
                     {% for tag in crash.tags %}
-                        <span class="label label-info">{{ tag }}</span> 
+                        <span class="label label-info">{{ tag }}</span>
                     {% endfor %}
                 {% endif %}
                 {% if crash.location is defined and crash.location|length > 0 %}
                     {% for location in crash.location %}
-                        <span class="label label-success">{{ location }}</span> 
+                        <span class="label label-success">{{ location }}</span>
                     {% endfor %}
                 {% endif %}
             </div>
@@ -75,7 +75,7 @@
         {% endif %}
     </div>
 </div>
-    
+
 <div class="row">
     <div class="col-md-4">
         <h4>MCP</h4>
@@ -233,7 +233,7 @@
 
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog" style="width: 800px">
-        <div class="modal-content"> 
+        <div class="modal-content">
         </div>
     </div>
 </div>
@@ -244,8 +244,8 @@ $(function() {
     $("a[data-target=#myModal]").click(function(ev) {
         ev.preventDefault();
         var target = $(this).attr("href");
-        $("#myModal .modal-content").load(target, function() { 
-             $("#myModal").modal("show"); 
+        $("#myModal .modal-content").load(target, function() {
+             $("#myModal").modal("show");
         });
     });
 });

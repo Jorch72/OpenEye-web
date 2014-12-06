@@ -28,7 +28,7 @@ class CrashesController {
     public function commoncrash(Request $request, $slug) {
         $commonCrash = $this->serviceCrashes->getCommonCrashBySlug($slug);
         if ($commonCrash == null) {
-            throw new \Exception();
+            $this->app->abort(404, "Crash $slug does not exits");
         }
 
         return $this->twig->render('commoncrash.twig', $commonCrash);
@@ -38,7 +38,7 @@ class CrashesController {
 
         $crash = $this->serviceCrashes->findByStackhash($stackhash);
         if ($crash == null) {
-            throw new \Exception();
+            $this->app->abort(404, "Crash $stackhash does not exists");
         }
 
         $response = array(
