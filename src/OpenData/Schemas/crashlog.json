@@ -77,7 +77,7 @@
             "type": "array",
             "required": false,
             "items": {
-                "type": "string",
+                "type": ["string", "null"],
                 "required": true
             }
         },

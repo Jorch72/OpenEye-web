@@ -28,6 +28,7 @@ class RoutesLoader {
             $apiController->registerPacketHandler($loader->app['handler.fileinfo']);
             $apiController->registerPacketHandler($loader->app['handler.crashlog']);
             $apiController->registerPacketHandler($loader->app['handler.filelist']);
+            $apiController->registerPacketHandler($loader->app['handler.knownfiles']);
 
             return $apiController;
         });

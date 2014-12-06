@@ -153,8 +153,8 @@ class CrashesService extends BaseService {
         }
 
         // get unique lists of both
-        $involvedSignatures = array_unique($involvedSignatures);
-        $involvedModIds = array_unique($involvedModIds);
+        $involvedSignatures = array_values(array_unique($involvedSignatures));
+        $involvedModIds = array_values(array_unique($involvedModIds));
 
         // find the hash of the stacktrace
         $packet['stackhash'] = md5(serialize($stackWithoutSignatures));

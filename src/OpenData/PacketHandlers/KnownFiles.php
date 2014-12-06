@@ -3,17 +3,17 @@
 
 namespace OpenData\PacketHandlers;
 
-class Analytics extends SignaturesBase {
+class KnownFiles extends SignaturesBase {
 
     public function __construct($files) {
         parent::__construct($files);
     }
 
     public function getPacketType() {
-        return 'analytics';
+        return 'known_files';
     }
 
     public function getJsonSchema() {
-        return 'analytics.json';
+        return 'known_files.json';
     }
 }

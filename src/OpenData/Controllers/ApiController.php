@@ -36,7 +36,11 @@ class ApiController {
             $retriever = new UriRetriever();
             $this->schemas[$schema] = $retriever->retrieve('file://' . __DIR__ . '/../Schemas/'.$schema);
         }
+    }
 
+    private function stat_increment($redis, $today, $key, $amount = 1) {
+        $redis->hincrby($today, $key, $amount);
+        $redis->hincrby("total", $key, $amount);
     }
 
     public function crash(Request $request) {
@@ -119,6 +123,12 @@ class ApiController {
 
         $index = 0;
 
+        $redis = new \Predis\Client();
+        $today = @date("Y-m-d");
+
+        $this->stat_increment($redis, $today, "requests");
+        $this->stat_increment($redis, $today, "bytes", $raw_size);
+
         foreach ($data as $packet) {
 
             $type = isset($packet['type']) && is_string($packet['type']) ?
@@ -128,6 +138,7 @@ class ApiController {
                 if ($type == null) {
                     throw new \Exception('Packet type not defined');
                 }
+                $this->stat_increment($redis, $today, "req:$type");
 
                 $response = null;
 
@@ -146,10 +157,16 @@ class ApiController {
                 }
 
                 if ($response = $handler->execute($packet)) {
+                    foreach ($response as $r) {
+                        $this->stat_increment($redis, $today, "resp:" . $r['type']);
+                    }
                     $responses = array_merge($responses, $response);
                 }
 
             } catch (\Exception $e) {
+                error_log("Exception while handling packet: " . $e);
+
+                $this->stat_increment($redis, $today, "error");
                 $responses = array_merge($responses, array(array(
                     'type' => 'error',
                     'reportType' => $type == null ? 'unknown' : $type,

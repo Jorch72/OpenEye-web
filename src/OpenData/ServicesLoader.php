@@ -34,9 +34,7 @@ class ServicesLoader {
 
         $this->app['handler.analytics'] = $this->app->share(function () use ($loader) {
             return new PacketHandlers\Analytics(
-                $loader->app["analytics.service"],
-                $loader->app["files.service"],
-                $loader->app["tags.service"]
+                $loader->app["files.service"]
             );
         });
 
@@ -61,6 +59,12 @@ class ServicesLoader {
 
         $this->app['handler.filelist'] = $this->app->share(function () use ($loader) {
             return new PacketHandlers\FileList(
+                $loader->app["files.service"]
+            );
+        });
+
+        $this->app['handler.knownfiles'] = $this->app->share(function() use ($loader) {
+            return new PacketHandlers\KnownFiles(
                 $loader->app["files.service"]
             );
         });
