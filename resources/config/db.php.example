@@ -1,0 +1,3 @@
+<?php
+$app['mongo_analytics_connection'] = 'mongodb://...';
+$app['mongo_connection'] = 'mongodb://...';
