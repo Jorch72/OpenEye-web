@@ -220,7 +220,7 @@ class CrashesService extends BaseService {
                 )));
 
                 $today = @date("Y-m-d");
-                $redis->hincrby($today, "new_crashes", 1);
+                $redis->hincrby("packets:$today", "new_crashes", 1);
             }
         } else {
 

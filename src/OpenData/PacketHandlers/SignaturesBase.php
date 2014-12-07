@@ -1,6 +1,5 @@
 <?php
 
-
 namespace OpenData\PacketHandlers;
 
 abstract class SignaturesBase implements IPacketHandler {
@@ -114,7 +113,7 @@ abstract class SignaturesBase implements IPacketHandler {
             $redis->publish('file', implode(", ", $newFilenames));
 
             $today = @date("Y-m-d");
-            $redis->hincrby($today, "new_files", $newFileCount);
+            $redis->hincrby("packets:$today", "new_files", $newFileCount);
         }
 
         return $responses;

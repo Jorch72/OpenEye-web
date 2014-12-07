@@ -39,8 +39,8 @@ class ApiController {
     }
 
     private function stat_increment($redis, $today, $key, $amount = 1) {
-        $redis->hincrby($today, $key, $amount);
-        $redis->hincrby("total", $key, $amount);
+        $redis->hincrby("packets:$today", $key, $amount);
+        $redis->hincrby("packets:total", $key, $amount);
     }
 
     public function crash(Request $request) {
@@ -124,6 +124,7 @@ class ApiController {
         $index = 0;
 
         $redis = new \Predis\Client();
+
         $today = @date("Y-m-d");
 
         $this->stat_increment($redis, $today, "requests");
@@ -164,8 +165,11 @@ class ApiController {
                 }
 
             } catch (\Exception $e) {
-                error_log("Exception while handling packet: " . $e);
+                error_log("Exception while handling packet type '$type': " . $e);
                 $this->stat_increment($redis, $today, "error");
+                if ($type) {
+                    $this->stat_increment($redis, $today, "error:$type");
+                }
                 $responses = array_merge($responses, array(array(
                     'type' => 'error',
                     'reportType' => $type == null ? 'unknown' : $type,

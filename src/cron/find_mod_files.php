@@ -1,5 +1,6 @@
 <?php
 
+echo("Starting " . @date("Y-m-d H:i:s") . "\n");
 require_once __DIR__ . '/../../vendor/autoload.php';
 
 $app = new Silex\Application();
