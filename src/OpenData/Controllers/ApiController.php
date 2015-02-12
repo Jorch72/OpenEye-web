@@ -43,6 +43,11 @@ class ApiController {
         $redis->hincrby("packets:total", $key, $amount);
     }
 
+    private function stat_increment_sub($redis, $today, $category, $key, $amount = 1) {
+        $redis->hincrby("packets:$today-$category", $key, $amount);
+        $redis->hincrby("packets:total-$category", $key, $amount);
+    }
+
     public function crash(Request $request) {
 
         try {
@@ -95,14 +100,32 @@ class ApiController {
 
         $content = $request->get('api_request', '[]');
 
+        $redis = new \Predis\Client();
+        $today = @date("Y-m-d");
+
+        $raw_size = strlen($content);
+        $compressed_size = $request->get('raw_size', $raw_size);
+
+        if ($raw_size == 0) {
+            $this->stat_increment($redis, $today, "msg_empty:decompressed");
+        }
+
+        if ($compressed_size == 0) {
+            $this->stat_increment($redis, $today, "msg_empty:compressed");
+        }
+
+        $this->stat_increment($redis, $today, "requests");
+        $this->stat_increment($redis, $today, "bytes:decompressed", $raw_size);
+        $this->stat_increment($redis, $today, "bytes:compressed", $compressed_size);
+        $this->stat_increment_sub($redis, $today, "compressed", sprintf('size:%06d', $compressed_size / 1024));
+        $this->stat_increment_sub($redis, $today, "decompressed", sprintf('size:%06d', $raw_size / 1024));
         //if ($this->isUserFlooding($request)) {
         //    return new JsonResponse(array());
         //}
 
-        $raw_size = strlen($content);
         if ($raw_size > 1024 * 1024) {
-            error_log("Big message: " . $raw_size);
             if ($raw_size > 20 * 1024 * 1024) {
+                $this->stat_increment($redis, $today, "discarded_big_messages");
                 error_log("Too much, man, too much! aborting");
                 return $this->error_response("I just can't your data");
             }
@@ -111,6 +134,7 @@ class ApiController {
         try {
             $data = json_decode(mb_convert_encoding($content, 'UTF-8', 'auto'), true);
         } catch (\Exception $e) {
+            $this->stat_increment($redis, $today, "error:json_parse");
             error_log("Failed to parse JSON ");
             return $this->error_response('Failed to parse JSON');
         }
@@ -122,13 +146,6 @@ class ApiController {
         $responses = array();
 
         $index = 0;
-
-        $redis = new \Predis\Client();
-
-        $today = @date("Y-m-d");
-
-        $this->stat_increment($redis, $today, "requests");
-        $this->stat_increment($redis, $today, "bytes", $raw_size);
 
         foreach ($data as $packet) {
 
