@@ -2,6 +2,7 @@
 
 namespace OpenData\Controllers;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class HomeController {
 
@@ -98,7 +99,7 @@ class HomeController {
         $pageCount = max(1, ((int) ($total - 1) / $perPage) + 1);
 
         if ($page > $pageCount || $page < 1) {
-            throw new \Exception('nope');
+            throw new NotFoundHttpException('Invalid page number');
         }
 
         return array(

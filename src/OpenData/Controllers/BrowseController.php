@@ -3,6 +3,7 @@
 namespace OpenData\Controllers;
 
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class BrowseController {
 
@@ -53,7 +54,7 @@ class BrowseController {
         $pageCount = max(1, ((int) ($total - 1) / $perPage) + 1);
 
         if ($page > $pageCount || $page < 1) {
-            throw new \Exception('nope');
+            throw new NotFoundHttpException('Invalid page number');
         }
 
         $results = $iterator->skip($skip)->limit($perPage);
