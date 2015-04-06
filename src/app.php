@@ -53,11 +53,10 @@ $app->after(function (Request $request, Response $response) use ($app, $time_sta
 $app->before(function (Request $request) use ($app) {
     if (0 === strpos($request->headers->get('Content-Type'), 'application/json')) {
         $content = $request->getContent();
+        $request->request->set('raw_size', strlen($content));
         if (0 === strpos($request->headers->get('Content-Encoding'), 'gzip')) {
                $content = @gzinflate(substr($content, 10, -8));
         }
-        //$data = json_decode($content, true);
-        //$request->request->replace(is_array($data) ? $data : array());
         $request->request->set('api_request', $content);
     }
 });
