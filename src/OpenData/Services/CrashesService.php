@@ -114,18 +114,19 @@ class CrashesService extends BaseService {
         if (isset($packet['states'])) {
             foreach ($packet['states'] as $state) {
                 if (isset($state['signature'])) {
-                    $errored = false;
+                    //$errored = false;
                     foreach ($state['mods'] as $mod) {
                         $sanitized = ModsService::sanitizeModId($mod['modId']);
-                        if ($mod['state'] == 'Errored') {
-                            $errored = true;
-                            $involvedModIds[] = $sanitized;
-                        }
+                        // Removed due to false positives -- B
+                        //if ($mod['state'] == 'Errored') {
+                        //    $errored = true;
+                        //    $involvedModIds[] = $sanitized;
+                        //}
                         $allModIds[] = $sanitized;
                     }
-                    if ($errored) {
-                        $involvedSignatures[] = $state['signature'];
-                    }
+                    //if ($errored) {
+                    //    $involvedSignatures[] = $state['signature'];
+                    //}
                     $allSignatures[] = $state['signature'];
                 }
             }

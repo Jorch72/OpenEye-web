@@ -58,7 +58,7 @@ class HomeController {
         } else if (strlen($letter) == 1) {
             $title = 'Mods beginning with "'.strtoupper($letter).'"';
         } else {
-            throw new \Exception();
+            throw new NotFoundHttpException('Not a letter');
         }
 
         return $this->twig->render('home.twig', array_merge(
@@ -77,7 +77,7 @@ class HomeController {
         $result = $this->serviceMods->findByTag($tag);
 
         if ($result->count() == 0) {
-            throw new \Exception();
+            throw new NotFoundHttpException('Invalid tag name');
         }
 
         return $this->twig->render('home.twig', array_merge(
