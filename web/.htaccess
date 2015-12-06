@@ -9,6 +9,10 @@
     RewriteRule ^stats/(.+)\.(.*)$ packet_stats.php?p=$1&t=$2 [L]
     RewriteRule ^stats/(.+)$ packet_stats.php?p=$1 [L]
 
+    RewriteRule ^counters/dimension/(.+)\.(.*)$ counter_stats.php?d=$1&t=$2 [L]
+    RewriteRule ^counters/(.+)/(.+)\.(.+)\.(.*)$ counter_stats.php?p=$1&k=$2&s=$3&t=$4 [L]
+    RewriteRule ^counters/(.+)/(.+)\.(.*)$ counter_stats.php?p=$1&k=$2&t=$3 [L]
+
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteRule ^ index.php [QSA,L]
 </IfModule>
@@ -16,7 +20,7 @@
 <IfModule mod_gzip.c>
     mod_gzip_on Yes
     mod_gzip_dechunk Yes
-    mod_gzip_item_include file \.(html|txt|css|js)$    
+    mod_gzip_item_include file \.(html|txt|css|js)$
     mod_gzip_item_include mime ^text/.*
     mod_gzip_item_include mime ^application/css.*
     mod_gzip_item_include mime ^application/javascript.*
