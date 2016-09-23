@@ -217,7 +217,7 @@ class CrashesService extends BaseService {
                 $redis = new \Predis\Client();
                 $redis->publish('crash', json_encode(array(
                     'modIds' => $involvedModIds,
-                    'content' => 'New crash! ' . self::reduceMessageForIRC($stackWithoutSignatures['exception'] . ': ' . $stackWithoutSignatures['message']) . ' - http://openeye.openmods.info/crashes/' . $packet['stackhash']
+                    'content' => 'New crash! ' . self::reduceMessageForIRC($stackWithoutSignatures['exception'] . ': ' . $stackWithoutSignatures['message']) . ' - https://openeye.openmods.info/crashes/' . $packet['stackhash']
                 )));
 
                 $today = @date("Y-m-d");
@@ -260,7 +260,7 @@ class CrashesService extends BaseService {
                 $redis = new \Predis\Client();
                 $redis->publish('crash', json_encode(array(
                     'modIds' => $involvedModIds,
-                    'content' => $crash['count'] . ' crashes: ' . self::reduceMessageForIRC($stackWithoutSignatures['exception'] . ': ' . $stackWithoutSignatures['message']) . ' - http://openeye.openmods.info/crashes/' . $packet['stackhash']
+                    'content' => $crash['count'] . ' crashes: ' . self::reduceMessageForIRC($stackWithoutSignatures['exception'] . ': ' . $stackWithoutSignatures['message']) . ' - https://openeye.openmods.info/crashes/' . $packet['stackhash']
                 )));
             }
         }
