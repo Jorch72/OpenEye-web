@@ -61,9 +61,12 @@ class ModController {
             $this->app->abort(404, "Modid not found");
         }
 
+        $redis = new \Predis\Client();
+
         $versions = array();
 
         foreach ($files as $file) {
+            $file['stats'] = $redis->hgetall("file_stats:" . $file['_id']);
             foreach ($file['mods'] as $mod) {
                 if ($mod['modId'] == $modId) {
                     $version = $mod['version'];
@@ -105,6 +108,9 @@ class ModController {
         if ($file == null) {
             $this->app->abort(404, "File not found");
         }
+
+        $redis = new \Predis\Client();
+        $file['stats'] = $redis->hgetall('file_stats:' . $fileId);
 
         return $this->twig->render('file.twig', array(
             'file' => $file

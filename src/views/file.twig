@@ -19,6 +19,32 @@
   {% endif%}
 
   <div class="row">
+    <div class="col-md-3"><strong>Size:</strong></div>
+    <div class="col-md-9">{{ file.size }}</div>
+  </div>
+
+  {% macro file_stats(file, type, timesField, firstTimeField, lastTimeField) %}
+  <div class="row">
+    <div class="col-md-3"><strong>Times {{ type }}:</strong></div>
+    <div class="col-md-9">{{ file.stats[timesField]|default('N/A')}}</div>
+  </div>
+  <div class="row">
+    <div class="col-md-3"><strong>First {{ type }}:</strong></div>
+    <div class="col-md-9">{% if file.stats[firstTimeField] is defined %}{{ file.stats[firstTimeField]|date("Y-m-d H:i:s") }}{% else %}N/A{% endif %}</div>
+  </div>
+  <div class="row">
+    <div class="col-md-3"><strong>Last {{ type }}:</strong></div>
+    <div class="col-md-9">{% if file.stats[lastTimeField] is defined %}{{ file.stats[lastTimeField]|date("Y-m-d H:i:s") }}{% else %}N/A{% endif %}</div>
+  </div>
+  {% endmacro %}
+
+  {{ _self.file_stats(file, "seen", "timesSeen", "firstSeen", "lastSeen") }}
+
+  {{ _self.file_stats(file, "installed", "timesInstall", "firstInstall", "lastInstall") }}
+
+  {{ _self.file_stats(file, "unistalled", "timesUninstall", "firstUninstall", "lastUninstall") }}
+
+  <div class="row">
     <div class="col-md-3"><strong>Known filenames:</strong></div>
     <div class="col-md-9">
       {% for filename in file.filenames %}

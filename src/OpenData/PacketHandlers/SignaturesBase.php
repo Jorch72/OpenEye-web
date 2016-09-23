@@ -6,16 +6,20 @@ abstract class SignaturesBase implements IPacketHandler {
 
     private $serviceFiles;
     private static $invalidFilenames = array(
-            'minecraft.jar',
-            '1.6.4-Forge9.11.1.965.jar',
-            '1.7.2-Forge10.12.1.1060.jar',
-            'scala-compiler-2.10.2.jar',
-            'scala-library-2.10.2.jar',
-            '1.7.2-Forge10.12.0.1047.jar'
+            'minecraft.jar'
+            //'1.6.4-Forge9.11.1.965.jar',
+            //'1.7.2-Forge10.12.1.1060.jar',
+            //'scala-compiler-2.10.2.jar',
+            //'scala-library-2.10.2.jar',
+            //'1.7.2-Forge10.12.0.1047.jar'
         );
 
     public function __construct($files) {
         $this->serviceFiles = $files;
+    }
+
+    public function isIgnoredFilename($filename) {
+        return in_array($filename, self::$invalidFilenames);
     }
 
     public function execute($packet) {
@@ -35,7 +39,6 @@ abstract class SignaturesBase implements IPacketHandler {
         // loop through them all and check for any additional data needed
         // for example, packages, classes, file, or security/update warnings
         foreach ($filesData as $fileData) {
-
             $signature = $fileData['_id'];
 
             $fileSignaturesFound[] = $signature;
@@ -93,16 +96,31 @@ abstract class SignaturesBase implements IPacketHandler {
 
         $newFilenames = array();
 
+        $now = time();
+        $redis = new \Predis\Client();
+
         // loop through any mods we didn't find in the database,
         // add them in, then tell the client we need the rest of the packages
         foreach ($packet['signatures'] as $signature) {
-            if (!in_array($signature['signature'], $fileSignaturesFound) && !in_array($signature['filename'], self::$invalidFilenames)) {
-                if ($this->serviceFiles->create($signature)) {
-                    $newFilenames[] = $signature['filename'];
-                    $responses[] = array(
-                        'type' => 'file_info',
-                        'signature' => $signature['signature']
-                    );
+            $signatureHash = $signature['signature'];
+            $signatureFilename = $signature['filename'];
+            if (!$this->isIgnoredFilename($signatureFilename)) {
+                $signatureKey = "file_stats:" . $signatureHash;
+                $redis->hsetnx($signatureKey, "firstSeen", $now);
+                $redis->hset($signatureKey, "lastSeen", $now);
+                $redis->hincrby($signatureKey, "timesSeen", 1);
+
+                if (!in_array($signatureHash, $fileSignaturesFound)) {
+                    if ($this->serviceFiles->create($signature)) {
+                        $signatureKey = "file_stats:" . $signatureHash;
+
+                        $newFilenames[] = $signatureFilename;
+
+                        $responses[] = array(
+                            'type' => 'file_info',
+                            'signature' => $signature['signature']
+                        );
+                    }
                 }
             }
         }
