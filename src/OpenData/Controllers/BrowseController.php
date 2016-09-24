@@ -12,7 +12,6 @@ class BrowseController {
     private $mongo_analytics;
 
     private static $TABLES = array(
-        'analytics',
         'crashes',
         'files',
         'mods',
@@ -36,17 +35,26 @@ class BrowseController {
         return $this->twig->render('browse.twig');
     }
 
-    public function table(Request $request, $table) {
-
+    public function single(Request $request, $table, $id) {
         if (!in_array($table, self::$TABLES)) {
-            throw new \Exception();
+            throw new NotFoundHttpException('Invalid table');
         }
 
-        if ($table == 'analytics') {
-            $iterator = $this->mongo_analytics->analytics_signatures->find();
-        } else {
-            $iterator = $this->mongo->$table->find();
+        $result = $this->mongo->$table->findOne(array('_id' => $id));
+        if (is_null($result)) {
+            throw new NotFoundHttpException('Invalid id');
         }
+
+        return new \Symfony\Component\HttpFoundation\JsonResponse($result);
+    }
+
+    public function table(Request $request, $table) {
+        if (!in_array($table, self::$TABLES)) {
+            throw new NotFoundHttpException('Invalid table');
+        }
+
+        $iterator = $this->mongo->$table->find();
+
         $page = $request->get('page', 1);
         $perPage = 50;
         $skip = ($page - 1) * $perPage;

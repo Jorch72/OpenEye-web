@@ -99,6 +99,7 @@ class RoutesLoader {
          */
         $site->get('/browse', "browse.controller:index");
         $site->get('/browse/{table}', "browse.controller:table");
+        $site->get('/browse/raw/{table}/{id}', "browse.controller:single");
 
         /**
          * Mods

@@ -6,13 +6,14 @@
         <div class="page-header">
             <h1>Browse the raw data</h1>
             <p>Although it may not mean much to most people, we allow people to explore our entire database. Click on a link on the left to view the data stored.</p>
+            <p></p>
+            <p>Data can also be queried directly via url <code>/browse/raw/{table}/{id}</code>, for example <a href="https://openeye.openmods.info/browse/raw/files/sha256:8772f727448b8c68785331ae051cb5d80ac6ade14b36646eed101f621356b1b1">https://openeye.openmods.info/browse/raw/files/sha256:8772f727448b8c68785331ae051cb5d80ac6ade14b36646eed101f621356b1b1</a></p>
         </div>
     </div>
 </div>
 <div class="row">
     <div class="col-md-2">
       <ul class="nav nav-pills nav-stacked">
-        <li{% if table is defined and table == 'analytics' %} class="active"{% endif %}><a href="{{ relative('browse/analytics') }}">Analytics</a></li>
         <li{% if table is defined and table == 'mods' %} class="active"{% endif %}><a href="{{ relative('browse/mods') }}">Mods</a></li>
         <li{% if table is defined and table == 'files' %} class="active"{% endif %}><a href="{{ relative('browse/files') }}">Files</a></li>
         <li{% if table is defined and table == 'crashes' %} class="active"{% endif %}><a href="{{ relative('browse/crashes') }}">Crashes</a></li>
