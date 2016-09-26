@@ -39,7 +39,7 @@ if (isset($_GET['p'])) {
 } elseif (isset($_GET['k'])) {
     $property = $_GET['k'];
     $redis = new \Predis\Client();
-    
+
     $result = Array();
     $keys = $redis->keys('packets:????-??-??');
     sort($keys);

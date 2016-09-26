@@ -13,6 +13,8 @@
     RewriteRule ^counters/(.+)/(.+)\.(.+)\.(.*)$ counter_stats.php?p=$1&k=$2&s=$3&t=$4 [L]
     RewriteRule ^counters/(.+)/(.+)\.(.*)$ counter_stats.php?p=$1&k=$2&t=$3 [L]
 
+    RewriteRule ^file_stats/(.+)\.(.+)$ file_stats.php?t=$2&f=$1 [L]
+
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteRule ^ index.php [QSA,L]
 </IfModule>
