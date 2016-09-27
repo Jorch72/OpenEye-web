@@ -90,6 +90,8 @@ class RoutesLoader {
         $site->get('/storage-policy', "home.controller:storagepolicy");
         $site->get('/configuration', "home.controller:configuration");
         $site->get('/faq', "home.controller:faq");
+        $site->get('/stats',"home.controller:stats");
+
         $site->get('/letter/{letter}', "home.controller:letter");
         $site->get('/tag/{tag}', "home.controller:tag");
         $site->get('/all', "home.controller:all");

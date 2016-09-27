@@ -6,7 +6,7 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>OpenEye{% block title%}{% endblock %}</title>
-        <link rel="icon" type="image/gif" src="{{ relative('favicon.gif') }}" />
+        <link rel="icon" type="image/gif" href="{{ relative('favicon.gif') }}" />
 
     {% block styles %}
         <link href="{{ relative('css/bootstrap.min.css') }}" rel="stylesheet">
@@ -24,7 +24,7 @@
         <div style="background-image: url('/sliderbg.jpg');">
             <div class="container" style="">
                 <div class="row" style="padding: 0px 0;">
-                    <a class="pull-right" href="http://www.creeperhost.net" style="height: 40px"><img src="/creeperhost.png"></a>
+                    <a class="pull-right" href="http://www.creeperhost.net" style="height: 40px"><img src="/creeperhost.png" alt="CreeperHost"></a>
                 </div>
             </div>
         </div>
@@ -42,6 +42,7 @@
                   <li><a href="{{ relative('') }}">Mods</a></li>
                   <li><a href="{{ relative('package') }}">Packages</a></li>
                   <li><a href="{{ relative('crashes') }}">Crashes</a></li>
+                  <li><a href="{{ relative('stats') }}">Statistics API</a></li>
                   <li><a href="{{ relative('browse') }}">Raw Data</a></li>
                 </ul>
               </div>

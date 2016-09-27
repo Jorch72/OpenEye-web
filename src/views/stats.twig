@@ -1,0 +1,51 @@
+{% extends 'base.twig' %}
+{% block main %}
+<div class="row">
+    <div class="col-md-12">
+        <div class="page-header">
+            <h1>Statistics API</h1>
+        </div>
+    </div>
+</div>
+{% macro codelink(url) %}<a href="{{url}}"><code>{{url}}</code></a>{% endmacro %}
+<div class="row">
+    <div class="col-md-12" style="padding-bottom: 50px">
+        <p>While real-time statistics are (permanently) unfinished, OpenEye has very basic API for querying cumulative stats.</p>
+        <p>To make it all simple, everything described on this page can be queried via simple GET requests.</p>
+        <p>All of those URLs return content in one of three formats: plaintext, CSV and JSON. To select which one you want to get, simply append correct extension to you URL:</p>
+        <ul>
+        <li><code>.txt</code> - plaintext. Not exact format, just something easy to read.</li>
+        <li><code>.json</code></li>
+        <li><code>.csv</code></li>
+        </ul>
+        <p>For example, {{ _self.codelink("/stats/packets/total.txt") }} will return plaintext, while {{ _self.codelink("/stats/packets/total.json") }} will return more structured data.</p>
+
+        <h3>Packet statistics</h3>
+        <p>Counters for raw requests received from clients.</p>
+        <ul>
+            <li><code>/stats/packets/YY-MM-DD.{ext}</code> - statistics collected over single day. Example: {{ _self.codelink("/stats/packets/2015-09-27.txt") }}.</li>
+            <li><a href="/stats/packets/total.txt"><code>/stats/packets/total.{ext}</code></a> - total statistics collected since 2014-12-07.</li>
+            <li><code>/stats/packets/timeline/{value}.{ext}</code> - daily statistics of single value. Example: {{ _self.codelink("/stats/packets/timeline/bytes:compressed.txt") }}</li>
+        </ul>
+        <h3>Analytics statistics</h3>
+        <p>Aggregation of few values contained in analytics packets</p>
+        <ul>
+            <li><a href="/stats/counters/dimension/counters.txt"><code>/stats/counters/dimension/counters.{ext}</code></a> - names of values that can be queried.</li>
+            <li><a href="/stats/counters/dimension/dates.txt"><code>/stats/counters/dimension/dates.{ext}</code></a> - dates that can be queried (notice special value <code>total</code>).</li>
+            <li><code>/stats/counters/{date}/{counter}.{ext}</code> - query for single value. Example: {{ _self.codelink("/stats/counters/total/minecraft.txt") }}.
+            <li><code>/stats/counters/{date}/{counter}.{sort}.{ext}</code> - same as above, but sorted. Example: {{ _self.codelink("/stats/counters/total/java.vd.txt") }}.
+                <ul>
+                    <li><code>key_desc</code>,<code>kd</code> - sort by key, descending</li>
+                    <li><code>key_asc</code>,<code>ka</code> - sort by key, ascending</li>
+                    <li><code>value_desc</code>,<code>vd</code> - sort by value, numerically, descending</li>
+                    <li><code>value_asc</code>,<code>va</code> - sort by value, numerically, ascending</li>
+                </ul>
+            </li>
+        </ul>
+        <h3>File statistics</h3>
+        <p>This endpoint allows to query information about single file hash.</p>
+        <p>For those statistics there is only one URL: <code>/stats/files/{hash}.{ext}</code>. Example: {{ _self.codelink("/stats/files/sha256:8772f727448b8c68785331ae051cb5d80ac6ade14b36646eed101f621356b1b1.txt") }}.</p>
+        <p>Note: this URL does not return file name or other file metadata. For that, use query for database browsing, like {{ _self.codelink("/browse/raw/files/sha256:8772f727448b8c68785331ae051cb5d80ac6ade14b36646eed101f621356b1b1") }}.</p>
+    </div>
+</div>
+{% endblock %}

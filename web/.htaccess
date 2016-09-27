@@ -4,16 +4,16 @@
     RewriteEngine On
     #RewriteBase /path/to/app
 
-    RewriteRule ^stats/timeline/(.+)\.(.*)$ packet_stats.php?k=$1&t=$2 [L]
-    RewriteRule ^stats/timeline/(.+)$ packet_stats.php?k=$1 [L]
-    RewriteRule ^stats/(.+)\.(.*)$ packet_stats.php?p=$1&t=$2 [L]
-    RewriteRule ^stats/(.+)$ packet_stats.php?p=$1 [L]
+    RewriteRule ^stats/packets/timeline/(.+)\.(.*)$ packet_stats.php?k=$1&t=$2 [L]
+    RewriteRule ^stats/packets/timeline/(.+)$ packet_stats.php?k=$1 [L]
+    RewriteRule ^stats/packets/(.+)\.(.*)$ packet_stats.php?p=$1&t=$2 [L]
+    RewriteRule ^stats/packets/(.+)$ packet_stats.php?p=$1 [L]
 
-    RewriteRule ^counters/dimension/(.+)\.(.*)$ counter_stats.php?d=$1&t=$2 [L]
-    RewriteRule ^counters/(.+)/(.+)\.(.+)\.(.*)$ counter_stats.php?p=$1&k=$2&s=$3&t=$4 [L]
-    RewriteRule ^counters/(.+)/(.+)\.(.*)$ counter_stats.php?p=$1&k=$2&t=$3 [L]
+    RewriteRule ^stats/counters/dimension/(.+)\.(.*)$ counter_stats.php?d=$1&t=$2 [L]
+    RewriteRule ^stats/counters/(.+)/(.+)\.(.+)\.(.*)$ counter_stats.php?p=$1&k=$2&s=$3&t=$4 [L]
+    RewriteRule ^stats/counters/(.+)/(.+)\.(.*)$ counter_stats.php?p=$1&k=$2&t=$3 [L]
 
-    RewriteRule ^file_stats/(.+)\.(.+)$ file_stats.php?t=$2&f=$1 [L]
+    RewriteRule ^stats/files/(.+)\.(.+)$ file_stats.php?t=$2&f=$1 [L]
 
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteRule ^ index.php [QSA,L]

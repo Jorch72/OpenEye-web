@@ -52,13 +52,13 @@ function print_as($data, $result_type) {
 $result_type= $_GET['t'] ?: "txt";
 
 if (isset($_GET['f'])) {
-    $property = $_GET['f'];
+    $hash = $_GET['f'];
     $redis = new \Predis\Client();
 
     $result = Array();
-    $keys = $redis->keys('file_stats:*');
+    $keys = $redis->keys("file_stats:{$hash}");
     if (!$keys) {
-        header("HTTP/1.1 400 LOL NOPE");
+        header("HTTP/1.1 404 LOL NOPE");
     } else {
         $key = $keys[0];
         $result = $redis->hgetall($key);

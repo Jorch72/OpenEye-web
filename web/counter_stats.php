@@ -106,6 +106,7 @@ if (isset($_GET['d'])) {
                 array_push($result, $matches[$dimension_id]);
             }
             $result = array_values(array_unique($result));
+            sort($result);
             print_table($result, $result_type);
         }
     }

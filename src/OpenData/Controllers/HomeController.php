@@ -34,6 +34,10 @@ class HomeController {
         return $this->twig->render('faq.twig');
     }
 
+    public function stats() {
+        return $this->twig->render('stats.twig');
+    }
+
     public function configuration() {
         return $this->twig->render('configuration.twig');
     }
