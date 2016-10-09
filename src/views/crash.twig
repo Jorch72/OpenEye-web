@@ -6,6 +6,7 @@
         <div class="page-header">
             <h1>{{ crash.exception.exception }}: <small>{{ crash.exception.message|length > 200 ? crash.exception.message|slice(0, 200) ~ '...' : crash.exception.message  }}</small></h1>
             <h5>{{ crash.count }} report{% if crash.count > 1 %}s{% endif %}</h5>
+            <h5><a href="/browse/raw/crashes/{{crash._id}}">Raw data</a></h5>
             <div>
                 {% if crash.side is defined %}
                     {% for side in crash.side %}

@@ -53,8 +53,7 @@ table.files-table thead tr .headerSortDown {
         {% if modInfo.donation is defined and modInfo.donation|trim is not empty %}
             <p><strong>Donations:</strong> <a href="{{ modInfo.donation|fullurl }}" target="_blank">{{ modInfo.donation|fullurl }}</a></p>
         {% endif %}
-
-
+        <p><a href="/browse/raw/mods/{{modInfo._id}}">Raw data</a></p>
     </div>
 </div>
 
