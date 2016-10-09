@@ -48,7 +48,7 @@ class Analytics extends SignaturesBase {
             }
         }
 
-        parent::execute($packet);
+        return parent::execute($packet);
     }
 
     public function getPacketType() {
