@@ -92,8 +92,8 @@ table.files-table thead tr .headerSortDown {
                             <td><div style="padding-top: 7px;">{{ file.filenames|first|lower }}</div></td>
                             <td><div style="padding-top: 7px;">{{ file.size }}</div></td>
                             <td><div style="padding-top: 7px;">{{ file.stats.timesSeen }}</div></td>
-                            <td><div style="padding-top: 7px;">{% if file.stats.firstSeen is defined %}{{ file.stats.firstSeen|date("Y-m-d") }}{% endif %}</div></td>
-                            <td><div style="padding-top: 7px;">{% if file.stats.lastSeen is defined %}{{ file.stats.lastSeen|date("Y-m-d") }}{% endif %}</div></td>
+                            <td><div style="padding-top: 7px;">{% if file.stats.firstSeen is defined %}<span title="{{file.stats.firstSeen|date("Y-m-d h:i:s")}}">{{file.stats.firstSeen|date("Y-m-d") }}</span>{% endif %}</div></td>
+                            <td><div style="padding-top: 7px;">{% if file.stats.lastSeen is defined %}<span title="{{file.stats.lastSeen|date("Y-m-d h:i:s")}}">{{ file.stats.lastSeen|date("Y-m-d") }}</span>{% endif %}</div></td>
                             <td>
                                 {% if file.downloadUrl is defined %}
                                 <div style="padding-top: 7px; text-align: center;">
