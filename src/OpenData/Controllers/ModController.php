@@ -41,7 +41,7 @@ class ModController {
         return new JsonResponse($modNames);
     }
 
-    public function modinfo($modId) {
+    public function modinfo($modId, $versionFilter="latest") {
 
         $modInfo = $this->serviceMods->findById($modId);
 
@@ -95,8 +95,24 @@ class ModController {
             $groupedVersions[$version] = array_merge($groupedVersions[$version], $files);
         }
 
+        if ($versionFilter === "latest") {
+            $versionValue = reset($groupedVersions);
+            $versionKey = key($groupedVersions);
+            $filteredVersions = array($versionKey => $versionValue);
+        } elseif ($versionFilter === "all") {
+            $filteredVersions = $groupedVersions;
+        } else {
+            if (isset($groupedVersions[$versionFilter])) {
+                $filteredVersions = array($versionFilter => $groupedVersions[$versionFilter]);
+            } else {
+                $filteredVersions = array();
+            }
+        }
+
         return $this->twig->render('mod.twig', array(
-            'versions' => $groupedVersions,
+            'versionFilter' => $versionFilter,
+            'allVersions' => array_keys($groupedVersions),
+            'versions' => $filteredVersions,
             'modInfo' => $modInfo
         ));
     }

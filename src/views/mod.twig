@@ -64,10 +64,27 @@ table.files-table thead tr .headerSortDown {
           <li class="active"><a href="#files" data-toggle="tab">Files</a></li>
           <li><a href="#analytics" data-toggle="tab">Analytics</a></li>
         </ul>
-
+{% macro version_selector(modid, version, selected, text) %}
+{% if selected == version %}
+{{text}}
+{% else %}
+<a href="/mod/{{modid}}/{{version}}">{{text}}</a>
+{% endif %}
+{% endmacro %}
         <!-- Tab panes -->
         <div class="tab-content">
                 <div class="tab-pane active" id="files">
+                <div class="row">
+                    <div class="col-md-12">
+                    <h4>
+                    {{ _self.version_selector(modInfo._id, "all", versionFilter, "All versions") }} &#x2022
+                    {{ _self.version_selector(modInfo._id, "latest", versionFilter, "Latest version") }}
+                    {% for version in allVersions %}
+                         &#x2022 {{ _self.version_selector(modInfo._id, version, versionFilter, version) }}
+                    {% endfor %}
+                    </h4>
+                    </div>
+                </div>
                 {% for version, files in versions %}
                     <div class="row" style="padding-top: 20px">
                     <h3 class="col-md-2" style="margin-top: 10px;text-align:right;">{{ version }}</h3>
