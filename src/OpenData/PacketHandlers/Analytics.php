@@ -16,7 +16,9 @@ class Analytics extends SignaturesBase {
 
     public function execute($packet) {
         $redis = new \Predis\Client();
-        $today = @date("Y-m-d");
+
+        $now = time();
+        $today = @date("Y-m-d", $now);
 
         $this->stat_increment($redis, $today, "java", $packet['javaVersion']);
         $this->stat_increment($redis, $today, "side", $packet['side']);
@@ -24,8 +26,15 @@ class Analytics extends SignaturesBase {
         $this->stat_increment($redis, $today, "language", $packet['language']);
         $this->stat_increment($redis, $today, "locale", $packet['locale']);
         $this->stat_increment($redis, $today, "timezone", $packet['timezone']);
+        $this->stat_increment($redis, $today, "obfuscated", $packet['obfuscated']);
         foreach ($packet['runtime'] as $k => $v) {
             $this->stat_increment($redis, $today, "runtime-$k", $v);
+        }
+
+        if (isset($packet["tags"])) {
+            foreach ($packet["tags"] as $tag) {
+                $this->stat_increment($redis, $today, "tags", $tag);
+            }
         }
 
         $now = time();

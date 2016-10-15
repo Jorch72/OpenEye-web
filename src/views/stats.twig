@@ -28,7 +28,7 @@
             <li><code>/stats/packets/timeline/{value}.{ext}</code> - daily statistics of single value. Example: {{ _self.codelink("/stats/packets/timeline/bytes:compressed.txt") }}</li>
         </ul>
         <h3>Analytics statistics</h3>
-        <p>Aggregation of few values contained in analytics packets</p>
+        <p>Aggregation of few values contained in analytics packets.</p>
         <ul>
             <li><a href="/stats/counters/dimension/counters.txt"><code>/stats/counters/dimension/counters.{ext}</code></a> - names of values that can be queried.</li>
             <li><a href="/stats/counters/dimension/dates.txt"><code>/stats/counters/dimension/dates.{ext}</code></a> - dates that can be queried (notice special value <code>total</code>).</li>
@@ -42,6 +42,7 @@
                 </ul>
             </li>
         </ul>
+        <p><strong>NOTE:</strong> <code>tags</code> and <code>obfuscated</code> values are collected since 2016-10-15. Other are collected since 2015-12-05.</p>
         <h3>File statistics</h3>
         <p>This endpoint allows to query information about single file hash.</p>
         <p>For those statistics there is only one URL: <code>/stats/files/{hash}.{ext}</code>. Example: {{ _self.codelink("/stats/files/sha256:8772f727448b8c68785331ae051cb5d80ac6ade14b36646eed101f621356b1b1.txt") }}.</p>
