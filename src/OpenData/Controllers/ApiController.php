@@ -114,6 +114,10 @@ class ApiController {
             $this->stat_increment($redis, $today, "msg_empty:compressed");
         }
 
+        if ($request->isSecure()) {
+            $this->stat_increment($redis, $today, "secure");
+        }
+
         $this->stat_increment($redis, $today, "requests");
         $this->stat_increment($redis, $today, "bytes:decompressed", $raw_size);
         $this->stat_increment($redis, $today, "bytes:compressed", $compressed_size);
