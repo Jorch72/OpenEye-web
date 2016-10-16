@@ -1,6 +1,7 @@
 <?php
 
 namespace OpenData\Controllers;
+use \Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
@@ -24,6 +25,20 @@ class HomeController {
 
     public function download() {
         return $this->twig->render('download.twig');
+    }
+
+    public function get_file(Application $app, Request $request) {
+        $mc_version = $request->get('mc_version');
+        $mod_version = $request->get('mod_version');
+        if ($mc_version === null || $mod_version === null) {
+            throw new NotFoundHttpException('Invalid file');
+        }
+        $now = date("Y-m-d");
+        $redis = new \Predis\Client();
+        $redis->hincrby("downloads:total:{$mod_version}", $mc_version, 1);
+        $redis->hincrby("downloads:{$now}:{$mod_version}", $mc_version, 1);
+        $path = "/releases/{$mod_version}/OpenEye-{$mc_version}-{$mod_version}.jar";
+        return $app->redirect($path);
     }
 
     public function storagepolicy() {

@@ -14,13 +14,24 @@
         <h2 style="margin-top: 40px;">Download</h2>
 
         <p>To install OpenEye simply drop it into your /mods/ folder.</p>
-        <p style="margin-bottom: 40px">
-            <a href="https://dl.dropboxusercontent.com/u/4295615/OpenEye-0.6-1.6.4.jar" class="btn btn-success">OpenEye 0.6 for 1.6.4</a>
-            <a href="https://dl.dropboxusercontent.com/u/4295615/OpenEye-0.6-1.7.2.jar" class="btn btn-success">OpenEye 0.6 for 1.7.2</a>
-<a href="https://dl.dropboxusercontent.com/u/4295615/OpenEye-0.6-1.7.10.jar" class="btn btn-success">OpenEye 0.6 for 1.7.10</a>
- </p>
+        <form action="/downloads">
+            <input type="hidden" name="mod_version" value="0.8" />
+            <select name="mc_version">
+                <option value="1.6.4">OpenEye 0.8 for MC 1.6.4</option>
+                <option value="1.7.2">OpenEye 0.8 for MC 1.7.2</option>
+                <option value="1.7.10">OpenEye 0.8 for MC 1.7.10</option>
+                <option value="1.8">OpenEye 0.8 for MC 1.8</option>
+                <option value="1.8.8">OpenEye 0.8 for MC 1.8.8</option>
+                <option value="1.8.9">OpenEye 0.8 for MC 1.8.9</option>
+                <option value="1.9">OpenEye 0.8 for MC 1.9</option>
+                <option value="1.9.4">OpenEye 0.8 for MC 1.9.4</option>
+                <option value="1.10">OpenEye 0.8 for MC 1.10</option>
+                <option value="1.10.2">OpenEye 0.8 for MC 1.10.2</option>
+            </select>
+            <input class="btn btn-primary" type="submit" value="Download"/>
+        </form>
 
-        <p>Here's a quick overview of the mod:</p>
+        <h2>Quick overview</h2>
         <h4 style="margin-top: 40px">Snooper Settings</h4>
         <p>First things first, our mod fully respects a user's snooper settings that are built into Minecraft - so if you don't like it, simply turn it off. However, be aware that turning it off in snooper settings means information we'd need in order to help you would not be available to us.</p>
         <p>You can safely can remove the mod without any side effects. You can also use config options to control what data is sent to the server, and ignore messages received back from the server.</p>

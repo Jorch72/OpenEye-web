@@ -87,6 +87,7 @@ class RoutesLoader {
          */
         $site->get('/', "home.controller:home");
         $site->get('/download', "home.controller:download");
+        $site->get('/downloads', 'home.controller:get_file');
         $site->get('/storage-policy', "home.controller:storagepolicy");
         $site->get('/configuration', "home.controller:configuration");
         $site->get('/faq', "home.controller:faq");
