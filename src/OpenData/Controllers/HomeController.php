@@ -35,8 +35,8 @@ class HomeController {
         }
         $now = date("Y-m-d");
         $redis = new \Predis\Client();
-        $redis->hincrby("downloads:total:{$mod_version}", $mc_version, 1);
-        $redis->hincrby("downloads:{$now}:{$mod_version}", $mc_version, 1);
+        $redis->hincrby("downloads:total", "$mod_version:$mc_version", 1);
+        $redis->hincrby("downloads:{$now}", "$mod_version:$mc_version", 1);
         $path = "/releases/{$mod_version}/OpenEye-{$mc_version}-{$mod_version}.jar";
         return $app->redirect($path);
     }
