@@ -37,6 +37,15 @@ class Analytics extends SignaturesBase {
             }
         }
 
+        foreach ($packet['signatures'] as $signature) {
+            $signatureHash = $signature['signature'];
+            $signatureFilename = $signature['filename'];
+            if (!$this->isIgnoredFilename($signatureFilename)) {
+                $signatureKey = "file_stats:" . $signatureHash;
+                $redis->hincrby($signatureKey, "seenMc:{$packet['minecraft']}", 1);
+            }
+        }
+
         $now = time();
 
         if (isset($packet["installedSignatures"])) {

@@ -18,7 +18,7 @@ table.files-table thead tr .headerSortDown {
 {% endblock %}
 {% block title %} - {{ modInfo.name }} Minecraft mod{% if modInfo.authors is defined and modInfo.authors|length > 0 %} by {{ modInfo.authors|join(', ') }}{% endif %}{% if modInfo.tags is defined %} - {{ modInfo.tags|join(', ') }}{% endif %}{% endblock %}
 {% block first %}
-<img src="{% if modInfo.largeImage is defined and modInfo.largeImage is not empty %}{{ relative(modInfo.largeImage) }}{% else %}{{ relative('largemodimages/default.jpg') }}{% endif %}" id="mod_image">
+<img src="{% if modInfo.largeImage is defined and modInfo.largeImage is not empty %}{{ relative(modInfo.largeImage) }}{% else %}{{ relative('largemodimages/default.jpg') }}{% endif %}" id="mod_image" alt="mod image">
 {% endblock %}
 {% block main %}
 <div class="row">
@@ -26,7 +26,7 @@ table.files-table thead tr .headerSortDown {
     <div class="col-md-12">
         <div class="page-header" id="modheader">
             <div class="inner">
-            <h1><span class="wrapped"><img style="width: 32px;height:32px;margin-top:-8px;" src="{% if modInfo.image is defined %}{{ relative(modInfo.image) }}{% else %}{{ relative('modimages/grass.png') }}{% endif %}" alt=""> {{ modInfo.name }}
+            <h1><span class="wrapped"><img style="width: 32px;height:32px;margin-top:-8px;" src="{% if modInfo.image is defined %}{{ relative(modInfo.image) }}{% else %}{{ relative('modimages/grass.png') }}{% endif %}" alt="mod icon"> {{ modInfo.name }}
             {% if modInfo.authors|length > 0 %}
                 <small>by {{ modInfo.authors|join(', ') }}</small>
             {% endif %}</span></h1>
@@ -77,10 +77,10 @@ table.files-table thead tr .headerSortDown {
                 <div class="row">
                     <div class="col-md-12">
                     <h4>
-                    {{ _self.version_selector(modInfo._id, "all", versionFilter, "All versions") }} &#x2022
+                    {{ _self.version_selector(modInfo._id, "all", versionFilter, "All versions") }} &#x2022;
                     {{ _self.version_selector(modInfo._id, "latest", versionFilter, "Latest version") }}
                     {% for version in allVersions %}
-                         &#x2022 {{ _self.version_selector(modInfo._id, version, versionFilter, version) }}
+                         &#x2022; {{ _self.version_selector(modInfo._id, version, versionFilter, version) }}
                     {% endfor %}
                     </h4>
                     </div>
@@ -100,7 +100,7 @@ table.files-table thead tr .headerSortDown {
                             <th class="col-md-1">Link</th>
                             <th class="col-md-1"><!--minecraft--></th>
                             <th class="col-md-1"><!--details--></th>
-                        <tr>
+                        </tr>
                     </thead>
                     <tbody>
                     {% for file in files %}
@@ -113,13 +113,14 @@ table.files-table thead tr .headerSortDown {
                             <td>
                                 {% if file.downloadUrl is defined %}
                                 <div style="padding-top: 7px; text-align: center;">
-                                   <a href="{{ file.downloadUrl }}" style="text-decoration: none!important;"><span class="glyphicon">&#xE026</span></a>
+                                   <a href="{{ file.downloadUrl }}" style="text-decoration: none!important;"><span class="glyphicon">&#xE026;</span></a>
                                 </div>
                                 {% endif %}
                             </td>
                             <td>
                                 <div style="padding-top: 7px;">
-                                    {% if file.minecraft is defined %}<span class="label label-info">{{ file.minecraft }}</span>{% endif %}
+                                    {% if file.seenMc is defined %}<span class="label label-info">{{ file.seenMc|keys|first }}</span>
+                                    {% elseif file.minecraft is defined %}<span class="label label-info">{{ file.minecraft }}</span>{% endif %}
                                 </div>
                             </td>
                             <td>

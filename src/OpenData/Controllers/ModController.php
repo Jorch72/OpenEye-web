@@ -41,6 +41,20 @@ class ModController {
         return new JsonResponse($modNames);
     }
 
+    private function extractSeenMc(&$stats) {
+        $seenMc = array();
+
+        foreach ($stats as  $k => $v) {
+            if (substr($k, 0, 7) == "seenMc:") {
+                $mc = substr($k, 7);
+                $seenMc[$mc] = $v;
+                unset($stats[$k]);
+            }
+        }
+        arsort($seenMc);
+        return $seenMc;
+    }
+
     public function modinfo($modId, $versionFilter="latest") {
 
         $modInfo = $this->serviceMods->findById($modId);
@@ -66,7 +80,11 @@ class ModController {
         $versions = array();
 
         foreach ($files as $file) {
-            $file['stats'] = $redis->hgetall("file_stats:" . $file['_id']);
+            $stats = $redis->hgetall("file_stats:" . $file['_id']);
+            $seenMc = $this->extractSeenMc($stats);
+            $file['stats'] = $stats;
+            $file['seenMc'] = $seenMc;
+
             foreach ($file['mods'] as $mod) {
                 if ($mod['modId'] == $modId) {
                     $version = $mod['version'];
@@ -128,6 +146,10 @@ class ModController {
         $redis = new \Predis\Client();
         $file['stats'] = $redis->hgetall('file_stats:' . $fileId);
 
+        $stats = $redis->hgetall("file_stats:" . $file['_id']);
+        $seenMc = $this->extractSeenMc($stats);
+        $file['stats'] = $stats;
+        $file['seenMc'] = $seenMc;
         return $this->twig->render('file.twig', array(
             'file' => $file
         ));
