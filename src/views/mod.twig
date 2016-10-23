@@ -14,6 +14,9 @@ table.files-table thead tr .headerSortUp {
 table.files-table thead tr .headerSortDown {
     background-image: url(/img/desc.gif);
 }
+.tooltip-inner {
+    white-space:pre-wrap;
+}
 </style>
 {% endblock %}
 {% block title %} - {{ modInfo.name }} Minecraft mod{% if modInfo.authors is defined and modInfo.authors|length > 0 %} by {{ modInfo.authors|join(', ') }}{% endif %}{% if modInfo.tags is defined %} - {{ modInfo.tags|join(', ') }}{% endif %}{% endblock %}
@@ -119,7 +122,7 @@ table.files-table thead tr .headerSortDown {
                             </td>
                             <td>
                                 <div style="padding-top: 7px;">
-                                    {% if file.seenMc is defined %}<span class="label label-info">{{ file.seenMc|keys|first }}</span>
+                                    {% if file.seenMc is defined %}<span class="label label-info" data-toggle="tooltip" data-placement="left" title="{% for v,c in file.seenMc %}{{ v }}: {{ c }}{% if not loop.last %}&#10;{% endif %}{% endfor %}">{{ file.seenMc|keys|first }}</span>
                                     {% elseif file.minecraft is defined %}<span class="label label-info">{{ file.minecraft }}</span>{% endif %}
                                 </div>
                             </td>
@@ -187,6 +190,8 @@ $(document).ready(function() { $(".files-table").tablesorter({sortList: [[2,1],[
           $('html,body').scrollTop(scrollmem);
           //redraw();
         });
+
+        $('[data-toggle="tooltip"]').tooltip()
     });
 
 </script>
