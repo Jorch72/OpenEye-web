@@ -1,4 +1,5 @@
 {% extends 'base.twig' %}
+{% import _self as mod %}
 {% block head %}
 {{ parent() }}
 <style type="text/css">
@@ -80,10 +81,10 @@ table.files-table thead tr .headerSortDown {
                 <div class="row">
                     <div class="col-md-12">
                     <h4>
-                    {{ _self.version_selector(modInfo._id, "all", versionFilter, "All versions") }} &#x2022;
-                    {{ _self.version_selector(modInfo._id, "latest", versionFilter, "Latest version") }}
+                    {{ mod.version_selector(modInfo._id, "all", versionFilter, "All versions") }} &#x2022;
+                    {{ mod.version_selector(modInfo._id, "latest", versionFilter, "Latest version") }}
                     {% for version in allVersions %}
-                         &#x2022; {{ _self.version_selector(modInfo._id, version, versionFilter, version) }}
+                         &#x2022; {{ mod.version_selector(modInfo._id, version, versionFilter, version) }}
                     {% endfor %}
                     </h4>
                     </div>
