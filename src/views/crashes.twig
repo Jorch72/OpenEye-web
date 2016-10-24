@@ -1,4 +1,15 @@
 {% extends 'base.twig' %}
+{% import _self as this %}
+{% macro print_tags(crash, field, label_cls) %}
+    {% if crash[field] is defined and crash[field]|length > 0 %}
+        <br />
+        {% set count = crash[field]|length %}
+        {% set trunc_count = min(count, 5) %}
+        {% for i in range(0, trunc_count) %}<span class="label {{ label_cls }}">{{ crash[field][i] }}</span> {% endfor %}
+        {% set is_truncated = trunc_count != count %}
+        {% if is_truncated %}<span class="label {{ label_cls }}">...</span>{% endif %}
+    {% endif %}
+{% endmacro %}
 
 {% block main %}
 <div class="row">
@@ -79,23 +90,12 @@
                     <td style="overflow:hidden;">
                         <a href="{{ relative('crashes/' ~ crash._id) }}">{% if crash.exception is not null %}{{ crash.exception.exception }}{% endif %}</a><br />
                         {% if trace is defined and trace is not null %}
-                               {% if trace.class is defined %}{{ trace.class }}.{% endif %}
+                            {% if trace.class is defined %}{{ trace.class }}.{% endif %}
                             {% if trace.method is defined %}<span>{{ trace.method }}()</span> {% endif %}
                             {% if trace.line is defined %}:{{ trace.line }}{% endif %}
-                            {% if crash.tags is defined and crash.tags|length > 0 %}
-                                <br />
-                                {% set count = min(crash.tags|length, 5) %}
-                                {% set is_truncated = crash.tags|length > 5 %}
-                                {% for i in range(0, count) %}<span class="label label-info">{{ crash.tags[i] }}</span> {% endfor %}
-                                {% if is_truncated %}<span class="label label-info">...</span>{% endif %}
-                            {% endif %}
-                            {% if crash.involvedMods is defined and crash.involvedMods|length > 0%}
-                                <br />
-                                {% set count = min(crash.involvedMods|length, 5) %}
-                                {% set is_truncated = crash.involvedMods|length > 5 %}
-                                {% for i in range(0, count) %}<span class="label label-primary">{{ crash.involvedMods[i] }}</span> {% endfor %}
-                                {% if is_truncated %}<span class="label label-primary">...</span>{% endif %}
-                            {% endif %}
+                            {{ this.print_tags(crash, "tags", "label-info") }}
+                            {{ this.print_tags(crash, "involvedMods", "label-primary") }}
+                            {{ this.print_tags(crash, "minecraft", "label-default") }}
                         {% endif %}
                     </td>
                     <td>{% if crash.note is defined %}<strong>{{ crash.note.message }} - {{ crash.note.user }}{% endif %}</td>
