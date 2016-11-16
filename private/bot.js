@@ -74,11 +74,6 @@ var actions = {
         secure: true,
         usage: '#mod:update <modid> <field> <value>'
     },
-    'mod:stats': {
-        func: mods.stats,
-        secure: false,
-        usage: '#mod:stats <modid>'
-    },
     'mod:unset': {
         func: mods.unsetField,
         secure: true,
