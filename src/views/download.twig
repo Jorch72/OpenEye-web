@@ -17,16 +17,9 @@
         <form action="/downloads">
             <input type="hidden" name="mod_version" value="0.8" />
             <select name="mc_version">
-                <option value="1.6.4">OpenEye 0.8 for MC 1.6.4</option>
-                <option value="1.7.2">OpenEye 0.8 for MC 1.7.2</option>
-                <option value="1.7.10">OpenEye 0.8 for MC 1.7.10</option>
-                <option value="1.8">OpenEye 0.8 for MC 1.8</option>
-                <option value="1.8.8">OpenEye 0.8 for MC 1.8.8</option>
-                <option value="1.8.9">OpenEye 0.8 for MC 1.8.9</option>
-                <option value="1.9">OpenEye 0.8 for MC 1.9</option>
-                <option value="1.9.4">OpenEye 0.8 for MC 1.9.4</option>
-                <option value="1.10">OpenEye 0.8 for MC 1.10</option>
-                <option value="1.10.2">OpenEye 0.8 for MC 1.10.2</option>
+                {% for mc_version in ["1.6.4","1.7.2","1.7.10","1.8","1.8.8","1.8.9","1.9","1.9.4","1.10","1.10.2","1.11"] %}
+                <option value="{{mc_version}}">OpenEye 0.8 for MC {{mc_version}}</option>
+                {% endfor %}
             </select>
             <input class="btn btn-primary" type="submit" value="Download"/>
         </form>
