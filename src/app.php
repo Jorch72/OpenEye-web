@@ -14,8 +14,6 @@ date_default_timezone_set('Etc/UTC');
 
 define("ROOT_PATH", __DIR__ . "/..");
 
-$time_start = microtime(true);
-
 $app->before(function (Request $request) {
     if ($request->getMethod() === "OPTIONS") {
         $response = new Response();
@@ -28,25 +26,9 @@ $app->before(function (Request $request) {
 }, Application::EARLY_EVENT);
 
 //handling CORS respons with right headers
-$app->after(function (Request $request, Response $response) use ($app, $time_start) {
+$app->after(function (Request $request, Response $response) use ($app) {
     $response->headers->set("Access-Control-Allow-Origin", "*");
     $response->headers->set("Access-Control-Allow-Methods", "GET,POST,PUT,DELETE,OPTIONS");
-
-    $time_end = microtime(true);
-    $timeTaken = $time_end - $time_start;
-    if ($timeTaken > 20) {
-        $slow_report = fopen(ROOT_PATH . '/storage/slow-logs/' . date('Y-m-d') . '.log', 'a');
-        try {
-            $current_date = date('Y-m-d H:i:s');
-            fwrite($slow_report, "[{$current_date}] {$request->getClientIp()} {$timeTaken}\n");
-            fwrite($slow_report, $request->get('api_request', '[]'));
-            fwrite($slow_report, "\n");
-        } catch (\Exception $e) {
-            error_log("Failed to log slow request: " . $e);
-        }
-        fclose($slow_report);
-    }
-
 });
 
 //accepting JSON
@@ -69,10 +51,6 @@ $app->register(new MongoServiceProvider(), array(
             'server' => $app['mongo_connection'],
             'options' => array("connect" => true)
         ),
-        'analytics' => array(
-            'server' => $app['mongo_analytics_connection'],
-            'options' => array("connect" => false)
-        )
     ),
 ));
 
