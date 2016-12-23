@@ -2,3 +2,5 @@
 *.swn
 *.swo
 composer.lock
+
+private/node_modules
