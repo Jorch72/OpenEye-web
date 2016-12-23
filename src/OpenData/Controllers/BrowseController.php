@@ -9,7 +9,6 @@ class BrowseController {
 
     private $twig;
     private $mongo;
-    private $mongo_analytics;
 
     private static $TABLES = array(
         'crashes',
@@ -25,10 +24,6 @@ class BrowseController {
         $connections = $mongo;
         $conn = $connections['default'];
         $this->mongo = $conn->hopper;
-
-        $analyticsConn = $mongo['analytics'];
-        $analyticsConn->connect();
-        $this->mongo_analytics = $analyticsConn->analytics;
     }
 
     public function index(Request $request) {

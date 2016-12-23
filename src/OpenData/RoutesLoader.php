@@ -47,7 +47,7 @@ class RoutesLoader {
 
         $this->app['mod.controller'] = $this->app->share(function () use ($loader) {
             return new Controllers\ModController(
-                    $loader->app['twig'], $loader->app, $loader->app['files.service'], $loader->app['mods.service'], $loader->app['analytics.service']
+                    $loader->app['twig'], $loader->app, $loader->app['files.service'], $loader->app['mods.service']
             );
         });
 
@@ -114,9 +114,6 @@ class RoutesLoader {
 
         $site->get('/mod/{modId}/crashes', "mod.controller:crashes");
         $site->get('/mod/{modId}/crashes/{fileId}', "mod.controller:crashes");
-
-        $site->get('/mod/{modId}/analytics', "mod.controller:analytics");
-        $site->get('/mod/{modId}/analytics/{fileId}', "mod.controller:analytics");
 
         /**
          * Crashes
