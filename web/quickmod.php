@@ -11,9 +11,6 @@ require __DIR__ . '/../resources/config/prod.php';
 require __DIR__ . '/../src/app.php';
 
 $mongo = $app['mongo'];
-$analytics = $mongo['analytics'];
-$analytics->connect();
-$db = $analytics->analytics;
 
 $master = array();
 
