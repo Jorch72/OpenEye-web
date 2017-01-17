@@ -50,12 +50,12 @@
                           {% if mod.unlisted is defined %}
                             <img src="{% if mod.image is defined %}{{ relative(mod.image) }}{% else %}{{ relative('modimages/grass.png') }}{% endif %}" alt="" class="pull-left">
                           {% else %}
-                            <a class="pull-left" href="{{ relative('mod/' ~ mod._id) }}">
+                            <a class="pull-left" href="{{ relative('mod/' ~ mod._id|e('url')) }}">
                               <img src="{% if mod.image is defined %}{{ relative(mod.image) }}{% else %}{{ relative('modimages/grass.png') }}{% endif %}" alt="">
                             </a>
                           {% endif %}
                           <div class="media-body">
-                            <h4 class="media-heading">{% if mod.unlisted is defined %}{{ mod.name }}{% else %}<a href="{{ relative('mod/' ~ mod._id) }}">{{ mod.name }}</a>{% if mod.authors|length > 0 %} <small>by {{ mod.authors|join(', ') }}</small>{% endif %}{% endif %}</h4>
+                            <h4 class="media-heading">{% if mod.unlisted is defined %}{{ mod.name }}{% else %}<a href="{{ relative('mod/' ~ mod._id|e('url')) }}">{{ mod.name }}</a>{% if mod.authors|length > 0 %} <small>by {{ mod.authors|join(', ') }}</small>{% endif %}{% endif %}</h4>
                             <p>{{ mod.description }}</p>
                             {% if mod.tags is defined and mod.tags|length > 0 %}
                               <p>

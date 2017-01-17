@@ -5,9 +5,9 @@
         <br />
         {% set count = crash[field]|length %}
         {% set trunc_count = min(count, 5) %}
-        {% for i in range(0, trunc_count) %}<span class="label {{ label_cls }}">{{ crash[field][i] }}</span> {% endfor %}
+        {% for e in crash[field][0:trunc_count] %}<span class="label {{ label_cls }}">{{ e }}</span> {% endfor %}
         {% set is_truncated = trunc_count != count %}
-        {% if is_truncated %}<span class="label {{ label_cls }}">...</span>{% endif %}
+        {% if is_truncated %}<span class="label {{ label_cls }}" data-toggle="tooltip" title="{{ crash[field][trunc_count:-1]|join('\n')|e('html_attr') }}">...</span>{% endif %}
     {% endif %}
 {% endmacro %}
 
@@ -43,11 +43,11 @@
                 </div>
           </div>
           <div class="form-group">
-            <label for="signature">File signature</label>
+            <label for="form_signature">File signature</label>
             {{ form_widget(form.signature, { 'attr': {'class': 'form-control'} } ) }}
           </div>
           <div class="form-group">
-            <label for="package" style="display: block;">Package</label>
+            <label for="form_package" style="display: block;">Package</label>
             {{ form_widget(form.package, { 'attr': {'class': 'form-control', 'disabled' : 'disabled'} } ) }}
           </div>
           <button type="submit" class="btn btn-default">Search</button>
@@ -149,6 +149,8 @@
             $('input[type=text]').change(disableVersion);
             $('input[type=text]').focus(disableVersion).blur(disableVersion);
             disableVersion();
+
+            $('[data-toggle="tooltip"]').tooltip();
         });
     </script>
 {% endblock %}

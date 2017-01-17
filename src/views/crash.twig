@@ -123,7 +123,7 @@
         <div class="col-md-5">
             <ul>
             {% for mod in chunk %}
-                <li>{% if mod.unlisted is defined and mod.unlisted %}{{ mod.name }}{% else %}<a href="{{ relative('mod/' ~ mod._id) }}">{{ mod.name }}</a>{% endif %}</li>
+                <li>{% if mod.unlisted is defined and mod.unlisted %}{{ mod.name }}{% else %}<a href="{{ relative('mod/' ~ mod._id|e('url')) }}">{{ mod.name }}</a>{% endif %}</li>
             {% endfor %}
             </ul>
         </div>
@@ -166,7 +166,7 @@
     {% for chunk in chunks %}
         <div class="col-md-4">
             <ul>
-            {% for mod in chunk %}<li>{% if mod.unlisted is defined and mod.unlisted %}{{ mod.name }}{% else %}<a href="{{ relative('mod/' ~ mod._id) }}">{{ mod.name }}</a>{% endif %}</li>{% endfor %}
+            {% for mod in chunk %}<li>{% if mod.unlisted is defined and mod.unlisted %}{{ mod.name }}{% else %}<a href="{{ relative('mod/' ~ mod._id|e('url')) }}">{{ mod.name }}</a>{% endif %}</li>{% endfor %}
             </ul>
         </div>
     {% endfor %}
