@@ -4,12 +4,22 @@ namespace OpenData\Services;
 
 class CrashesService extends BaseService {
 
+    private static $UNIFY_REGEX = array(
+        '/GeneratedMethodAccessor[0-9]+/',
+        '/ASMEventHandler_[0-9]+_/',
+        '/\$\$Lambda\$[0-9]+\/[0-9]+/',
+        '/com\.sun\.proxy\.\$Proxy[0-9]+/'
+    );
+
+    private static $UNIFY_REPLACEMENT = array(
+        'GeneratedMethodAccessor',
+        'ASMEventHandler_0_',
+        '\$\$Lambda\$0/0',
+        'com.sun.proxy.\$Proxy0'
+    );
+
     public static function sanitizeGeneratedMethodNames($klazz) {
-
-        $klazz = preg_replace('@GeneratedMethodAccessor[0-9]+@', 'GeneratedMethodAccessor', $klazz);
-        $klazz = preg_replace('@ASMEventHandler_[0-9]+_@', 'ASMEventHandler_0_', $klazz);
-
-        return $klazz;
+        return preg_replace(self::$UNIFY_REGEX, self::$UNIFY_REPLACEMENT, $klazz);
     }
 
     public static function sanitizeMessage($arr) {
