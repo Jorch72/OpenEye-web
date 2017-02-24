@@ -6,6 +6,7 @@ class CrashesService extends BaseService {
 
     private static $UNIFY_REGEX = array(
         '/GeneratedMethodAccessor[0-9]+/',
+        '/GeneratedConstructorAccessor[0-9]+/',
         '/ASMEventHandler_[0-9]+_/',
         '/\$\$Lambda\$[0-9]+\/[0-9]+/',
         '/com\.sun\.proxy\.\$Proxy[0-9]+/'
@@ -13,6 +14,7 @@ class CrashesService extends BaseService {
 
     private static $UNIFY_REPLACEMENT = array(
         'GeneratedMethodAccessor',
+        'GeneratedConstructorAccessor',
         'ASMEventHandler_0_',
         '\$\$Lambda\$0/0',
         'com.sun.proxy.\$Proxy0'
