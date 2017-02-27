@@ -57,22 +57,21 @@ table.files-table thead tr .headerSortDown {
         {% if modInfo.donation is defined and modInfo.donation|trim is not empty %}
             <p><strong>Donations:</strong> <a href="{{ modInfo.donation|fullurl }}" target="_blank">{{ modInfo.donation|fullurl }}</a></p>
         {% endif %}
-        <p><a href="/browse/raw/mods/{{modInfo._id|e('url')}}">Raw data</a></p>
+        <div class = "btn-group">
+            <a class="btn btn-default" href="/browse/raw/mods/{{modInfo._id|e('url')}}">Raw data</a>
+            <a class="btn btn-default" href="/crashes?{{ {'form[mod]': modInfo.name}|url_encode }}">Go to crashes</a>
+        </div>
     </div>
 </div>
 
 <div class="row" style="padding-top: 40px;">
 
     <div class="col-md-12">
-        <ul class="nav nav-tabs">
-          <li class="active"><a href="#files" data-toggle="tab">Files</a></li>
-          <li><a href="#analytics" data-toggle="tab">Analytics</a></li>
-        </ul>
 {% macro version_selector(modid, version, selected, text) %}
 {% if selected == version %}
-{{text}}
+<li class="nav-item active" ><a class="nav-link" href="#">{{text}}</a></li>
 {% else %}
-<a href="/mod/{{modid|e('url')}}/{{version}}">{{text}}</a>
+<li class="nav-item" ><a class ="nav-link" href="/mod/{{modid|e('url')}}/{{version}}">{{text}}</a></li>
 {% endif %}
 {% endmacro %}
         <!-- Tab panes -->
@@ -80,13 +79,13 @@ table.files-table thead tr .headerSortDown {
                 <div class="tab-pane active" id="files">
                 <div class="row">
                     <div class="col-md-12">
-                    <h4>
-                    {{ mod.version_selector(modInfo._id, "all", versionFilter, "All versions") }} &#x2022;
-                    {{ mod.version_selector(modInfo._id, "latest", versionFilter, "Latest version") }}
-                    {% for version in allVersions %}
-                         &#x2022; {{ mod.version_selector(modInfo._id, version, versionFilter, version) }}
-                    {% endfor %}
-                    </h4>
+                        <ul class="nav nav-pills">
+                            {{ mod.version_selector(modInfo._id, "all", versionFilter, "All versions") }}
+                            {{ mod.version_selector(modInfo._id, "latest", versionFilter, "Latest version") }}
+                            {% for version in allVersions %}
+                                {{ mod.version_selector(modInfo._id, version, versionFilter, version) }}
+                            {% endfor %}
+                        </ul>
                     </div>
                 </div>
                 {% for version, files in versions %}
@@ -140,22 +139,11 @@ table.files-table thead tr .headerSortDown {
                     </div>
                 {% endfor %}
             </div>
-            <div class="tab-pane" id="analytics" style="padding-top:20px;">
-                <div id="analytics_content">
-                <p>Analytics temporarily disabled! Sorry about that. #BlameMikee</p>
-                    <!--
-                    <h3>Past day <span id="launches"></span></h3>
-
-                    <div id="pie_charts"></div>
-                    -->
-
-                </div>
-            </div>
         </div>
     </div>
 </div>
 
-<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog" style="width: 800px">
         <div class="modal-content">
         </div>

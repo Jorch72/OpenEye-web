@@ -2,7 +2,10 @@
 <div class="modal-header">
   <a class="close" data-dismiss="modal">&times;</a>
   <h3>{{ file.filenames|first }}</h3>
-  <h5><a href="/browse/raw/files/{{file._id}}">Raw data</a></h5>
+  <div class = "btn-group">
+    <a class="btn btn-default" href="/browse/raw/files/{{file._id}}"">Raw data</a>
+    <a class="btn btn-default" href="/crashes?{{ {'form[signature]': file._id}|url_encode }}">Go to crashes</a>
+  </div>
 </div>
 <div class="modal-body">
   <div class="row" style="clear:both;">
