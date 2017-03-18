@@ -54,18 +54,20 @@ class ModsService extends BaseService {
     }
 
     public function findForHomepage() {
-        return $this->db->mods->find(
+        return $this->db->mods->aggregate(
             array(
-                'hide' => array('$ne' => true),
-                'unlisted' => array('$ne' => true),
-                'tags' => array('$ne' => 'library'),
-                '_id' => array('$ne' => 'openeye')
+                array(
+                    '$match' => array(
+                        'hide' => array('$ne' => true),
+                        'unlisted' => array('$ne' => true),
+                        'tags' => array('$ne' => 'library')
+                    )
+                ),
+                array(
+                    '$sample' => array('size' => 50)
+                )
             )
-        )->sort(
-            array(
-                'launches' => -1
-            )
-        )->limit(50);
+        )['result'];
     }
 
     public function findByIds($modIds = array()) {

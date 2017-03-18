@@ -18,7 +18,7 @@ class HomeController {
     public function home() {
         return $this->twig->render('home.twig', array(
             'mods' => $this->serviceMods->findForHomepage(),
-            'title' => 'Most popular',
+            'title' => 'Random mods',
             'tags' => $this->serviceMods->getDistinctTags()
         ));
     }
