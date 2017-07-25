@@ -15,12 +15,28 @@ class HomeController {
         $this->serviceMods = $mods;
     }
 
-    public function home() {
-        return $this->twig->render('home.twig', array(
-            'mods' => $this->serviceMods->findForHomepage(),
-            'title' => 'Random mods',
-            'tags' => $this->serviceMods->getDistinctTags()
+    public function home(Request $request) {
+        $regex = $request->get('query');
+        if ($regex == null) {
+            return $this->twig->render('home.twig', array(
+                'mods' => $this->serviceMods->findForHomepage(),
+                'title' => 'Random mods',
+                'tags' => $this->serviceMods->getDistinctTags()
+            ));
+        } else {
+            return $this->twig->render('home.twig', array_merge(
+                $this->getPagination(
+                    $this->serviceMods->findForHomepageByRegex($regex),
+                    $request->get('page', 1),
+                    20,
+                    "query={$regex}&"
+                ),
+                array(
+                    'title' => "Listing mods matched with '{$regex}'"
+                )
         ));
+
+        }
     }
 
     public function download() {
@@ -110,7 +126,7 @@ class HomeController {
         ));
     }
 
-    private function getPagination($iterator, $page = 1, $perPage = 20) {
+    private function getPagination($iterator, $page = 1, $perPage = 20, $query="") {
 
         $skip = ($page - 1) * $perPage;
         $total = $iterator->count();
@@ -128,7 +144,8 @@ class HomeController {
             'total' => $total,
             'disablePrev' => $page <= 1,
             'disableNext' => $page + 1 >= $pageCount,
-            'tags' => $this->serviceMods->getDistinctTags()
+            'tags' => $this->serviceMods->getDistinctTags(),
+            'query_addon' => $query
         );
 
     }

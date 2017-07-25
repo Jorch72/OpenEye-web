@@ -15,6 +15,17 @@
                 <li><a href="{{ relative('all') }}">List all mods</a></li>
           </ul>
           <strong>Find by name:</strong>
+          <form role="form" method="get" action="/mod">
+            <div class="form-group">
+                <div class="input-group">
+                    <input type="text" id="form_mod" name="query" class="form-control typeahead" autocomplete="off" />
+                     <span class="input-group-btn">
+                        <input type="submit" class="btn btn-info" name="search" title="Search" value="?"/>
+                        <input type="submit" class="btn btn-secondary" name="goto" title="Go To" value="&gt;"/>
+                    </span>
+                </div>
+            </div>
+          </form>
           <ul class="nav nav-home">
               {% for letter in range('A', 'Z') %}
                 <li><a href="{{ relative('letter/'~letter|lower) }}">{{ letter }}</a></li>
@@ -33,11 +44,11 @@
 
         {% if page_count is defined and page_count > 2 %}
         <ul class="pagination">
-            <li{% if disablePrev %} class="disabled"{%endif %}><a href="{% if disablePrev %}#{% else %}?page={{ current_page - 1 }}{% endif %}">&laquo;</a></li>
+            <li{% if disablePrev %} class="disabled"{%endif %}><a href="{% if disablePrev %}#{% else %}?{{ query_addon }}page={{ current_page - 1 }}{% endif %}">&laquo;</a></li>
             {% for page in range(1, page_count) %}
-                <li{% if current_page == page %} class="active"{%endif %}><a href="?page={{ page }}">{{ page }}</a></li>
+                <li{% if current_page == page %} class="active"{%endif %}><a href="?{{ query_addon }}page={{ page }}">{{ page }}</a></li>
             {% endfor %}
-            <li{% if disableNext %} class="disabled"{%endif %}><a href="{% if disableNext %}#{% else %}?page={{ current_page + 1 }}{% endif %}">&raquo;</a></li>
+            <li{% if disableNext %} class="disabled"{%endif %}><a href="{% if disableNext %}#{% else %}?{{ query_addon }}page={{ current_page + 1 }}{% endif %}">&raquo;</a></li>
         </ul>
         {% endif %}
 
@@ -74,15 +85,36 @@
 
         {% if page_count is defined  and page_count > 2 %}
         <ul class="pagination">
-            <li{% if disablePrev %} class="disabled"{%endif %}><a href="{% if disablePrev %}#{% else %}?page={{ current_page - 1 }}{% endif %}">&laquo;</a></li>
+            <li{% if disablePrev %} class="disabled"{%endif %}><a href="{% if disablePrev %}#{% else %}?{{ query_addon }}page={{ current_page - 1 }}{% endif %}">&laquo;</a></li>
             {% for page in range(1, page_count) %}
-                <li{% if current_page == page %} class="active"{%endif %}><a href="?page={{ page }}">{{ page }}</a></li>
+                <li{% if current_page == page %} class="active"{%endif %}><a href="?{{ query_addon }}page={{ page }}">{{ page }}</a></li>
             {% endfor %}
-            <li{% if disableNext %} class="disabled"{%endif %}><a href="{% if disableNext %}#{% else %}?page={{ current_page + 1 }}{% endif %}">&raquo;</a></li>
+            <li{% if disableNext %} class="disabled"{%endif %}><a href="{% if disableNext %}#{% else %}?{{ query_addon }}page={{ current_page + 1 }}{% endif %}">&raquo;</a></li>
         </ul>
         {% endif %}
 
 
     </div>
 </div>
+{% endblock %}
+
+{% block javascript %}
+<script src="{{ relative('js/typeahead.js') }}"></script>
+    <script type="text/javascript">
+        $(function() {
+            var mods = new Bloodhound({
+                 datumTokenizer: Bloodhound.tokenizers.obj.whitespace('value'),
+                 queryTokenizer: Bloodhound.tokenizers.whitespace,
+                 remote: '{{ relative('mod/find') }}?q=%QUERY',
+                 limit: 32
+            });
+            mods.initialize();
+            $('#form_mod').typeahead({
+                 name: 'mods',
+                 displayKey: 'value',
+                 source: mods.ttAdapter(),
+                 limit: 32
+            });
+        });
+    </script>
 {% endblock %}

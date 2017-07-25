@@ -40,6 +40,21 @@ class ModController {
         return new JsonResponse($modNames);
     }
 
+    public function redirect(Request $request) {
+        $query = $request->get('query');
+        if ($query != null) {
+            if ($request->get('goto')) {
+                $mod = $this->serviceMods->findByName($query);
+                if ($mod != null) {
+                    return $this->app->redirect('/mod/' . $mod['_id']);
+                }
+            } else if ($request->get('search')) {
+                return $this->app->redirect('/?query=' . $query);
+            }
+        }
+        return $this->app->redirect('/');
+    }
+
     private function extractSeenMc(&$stats) {
         $seenMc = array();
 

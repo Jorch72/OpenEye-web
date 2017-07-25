@@ -109,6 +109,7 @@ class RoutesLoader {
          */
         $site->get('/file/{fileId}', "mod.controller:fileinfo");
         $site->get('/mod/find', "mod.controller:find");
+        $site->get('/mod', "mod.controller:redirect");
         $site->get('/mod/{modId}', "mod.controller:modinfo");
         $site->get('/mod/{modId}/{versionFilter}', "mod.controller:modinfo");
 

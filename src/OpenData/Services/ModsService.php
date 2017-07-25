@@ -8,6 +8,10 @@ class ModsService extends BaseService {
         return $this->db->mods->findOne(array('_id' => $modId));
     }
 
+    public function findByName($modName) {
+        return $this->db->mods->findOne(array('name' => $modName));
+    }
+
     public function findByRegex($search, $searchId = true) {
 
         $regex = new \MongoRegex('/' . $search . '/i');
@@ -68,6 +72,13 @@ class ModsService extends BaseService {
                 )
             )
         )['result'];
+    }
+
+    public function findForHomepageByRegex($regex) {
+        return $this->db->mods->find(array(
+            'hide' => array('$ne' => true),
+            'name' => new \MongoRegex('/' . $regex . '/i')
+            ));
     }
 
     public function findByIds($modIds = array()) {
