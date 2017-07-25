@@ -47,10 +47,10 @@
 
   {{ files.file_stats(file, "installed", "timesInstall", "firstInstall", "lastInstall") }}
 
-  {{ files.file_stats(file, "unistalled", "timesUninstall", "firstUninstall", "lastUninstall") }}
+  {{ files.file_stats(file, "uninstalled", "timesUninstall", "firstUninstall", "lastUninstall") }}
 
   <div class="row">
-    <div class="col-md-3"><strong>Seen in</strong></div>
+    <div class="col-md-3"><strong>Seen in:</strong></div>
     <div class="col-md-9">{% for mc,count in file.seenMc %}<p>{{mc}}: {{count}}</p>{% endfor %}</div>
   </div>
 
