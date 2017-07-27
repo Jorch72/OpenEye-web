@@ -92,6 +92,7 @@ class RoutesLoader {
         $site->get('/configuration', "home.controller:configuration");
         $site->get('/faq', "home.controller:faq");
         $site->get('/stats',"home.controller:stats");
+        $site->get('/contact',"home.controller:contact");
 
         $site->get('/letter/{letter}', "home.controller:letter");
         $site->get('/tag/{tag}', "home.controller:tag");

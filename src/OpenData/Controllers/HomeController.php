@@ -43,6 +43,10 @@ class HomeController {
         return $this->twig->render('download.twig');
     }
 
+    public function contact() {
+        return $this->twig->render('contact.twig');
+    }
+
     public function get_file(Application $app, Request $request) {
         $mc_version = $request->get('mc_version');
         $mod_version = $request->get('mod_version');
