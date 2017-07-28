@@ -3,17 +3,22 @@
 {% block head %}
 {{ parent() }}
 <style type="text/css">
-table.files-table thead tr .header {
-    background-image: url(/img/unsorted.gif);
+table.files-table thead th.tablesorter-header {
     background-repeat: no-repeat;
     background-position: center right;
     cursor: pointer;
 }
-table.files-table thead tr .headerSortUp {
+table.files-table thead th.tablesorter-headerUnSorted {
+    background-image: url(/img/unsorted.gif);
+}
+table.files-table thead th.tablesorter-headerAsc {
     background-image: url(/img/asc.gif);
 }
-table.files-table thead tr .headerSortDown {
+table.files-table thead th.tablesorter-headerDesc {
     background-image: url(/img/desc.gif);
+}
+table.files-table thead th.sorter-false {
+    background-image: none !important;
 }
 .tooltip-inner {
     white-space:pre-wrap;
@@ -74,6 +79,11 @@ table.files-table thead tr .headerSortDown {
 <li class="nav-item" ><a class ="nav-link" href="/mod/{{modid|e('url')}}/{{version}}">{{text}}</a></li>
 {% endif %}
 {% endmacro %}
+{% macro stat_column(file, timesField, firstTimeField, lastTimeField) %}
+<td><div style="padding-top: 7px;">{{ file.stats[timesField] }}</div></td>
+<td><div style="padding-top: 7px;">{% if file.stats[firstTimeField] is defined %}<span title="{{file.stats[firstTimeField]|date("Y-m-d h:i:s")}}">{{file.stats[firstTimeField]|date("Y-m-d") }}</span>{% endif %}</div></td>
+<td><div style="padding-top: 7px;">{% if file.stats[lastTimeField] is defined %}<span title="{{file.stats[lastTimeField]|date("Y-m-d h:i:s")}}">{{ file.stats[lastTimeField]|date("Y-m-d") }}</span>{% endif %}</div></td>
+{% endmacro %}
         <!-- Tab panes -->
         <div class="tab-content">
                 <div class="tab-pane active" id="files">
@@ -92,6 +102,12 @@ table.files-table thead tr .headerSortDown {
                     <div class="row" style="padding-top: 20px">
                     <h3 class="col-md-2" style="margin-top: 10px;text-align:right;">{{ version }}</h3>
                     <div class="col-md-10">
+                    <button id="popover" type="button" class="btn btn-default">
+                        Select Columns
+                    </button>
+                    <div class="hidden">
+                        <div id="popover-target"></div>
+                    </div>
                     <table class="table table-striped files-table">
                     <thead>
                         <tr>
@@ -100,9 +116,15 @@ table.files-table thead tr .headerSortDown {
                             <th class="col-md-1">Times seen</th>
                             <th class="col-md-1">First seen</th>
                             <th class="col-md-1">Last seen</th>
+                            <th class="col-md-1 columnSelector-false">Times installed</th>
+                            <th class="col-md-1 columnSelector-false">First installed</th>
+                            <th class="col-md-1 columnSelector-false">Last installed</th>
+                            <th class="col-md-1 columnSelector-false">Times uninstalled</th>
+                            <th class="col-md-1 columnSelector-false">First uninstalled</th>
+                            <th class="col-md-1 columnSelector-false">Last uninstalled</th>
                             <th class="col-md-1">Link</th>
-                            <th class="col-md-1"><!--minecraft--></th>
-                            <th class="col-md-1"><!--details--></th>
+                            <th class="col-md-1" data-selector-name="MC versions"><!--minecraft--></th>
+                            <th class="col-md-1" data-selector-name="Details" data-sorter="false"><!--details--></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -110,9 +132,9 @@ table.files-table thead tr .headerSortDown {
                         <tr>
                             <td><div style="padding-top: 7px;">{{ file.filenames|first|lower }}</div></td>
                             <td><div style="padding-top: 7px;">{{ file.size }}</div></td>
-                            <td><div style="padding-top: 7px;">{{ file.stats.timesSeen }}</div></td>
-                            <td><div style="padding-top: 7px;">{% if file.stats.firstSeen is defined %}<span title="{{file.stats.firstSeen|date("Y-m-d h:i:s")}}">{{file.stats.firstSeen|date("Y-m-d") }}</span>{% endif %}</div></td>
-                            <td><div style="padding-top: 7px;">{% if file.stats.lastSeen is defined %}<span title="{{file.stats.lastSeen|date("Y-m-d h:i:s")}}">{{ file.stats.lastSeen|date("Y-m-d") }}</span>{% endif %}</div></td>
+                            {{ mod.stat_column(file, "timesSeen", "firstSeen", "lastSeen") }}
+                            {{ mod.stat_column(file, "timesInstall", "firstInstall", "lastInstall") }}
+                            {{ mod.stat_column(file, "timesUninstall", "firstUninstall", "lastUninstall") }}
                             <td>
                                 {% if file.downloadUrl is defined %}
                                 <div style="padding-top: 7px; text-align: center;">
@@ -155,8 +177,14 @@ table.files-table thead tr .headerSortDown {
 {% block javascript %}
 
 <script type="text/javascript" src="/js/jquery.tablesorter.min.js"></script>
+<script type="text/javascript" src="/js/widget-columnSelector.min.js"></script>
 <script type="text/javascript">
-$(document).ready(function() { $(".files-table").tablesorter({sortList: [[2,1],[0,0]], headers : {7: {sorter: false}}}); });
+$(document).ready(function() { 
+    $(".files-table").tablesorter({widgets: ['columnSelector'], widgetOptions : {columnSelector_mediaqueryState: false},
+                                   sortList: [[2,1],[0,0]] });
+    $.tablesorter.columnSelector.attachTo( $('.files-table'), '#popover-target');
+    $('#popover').popover({placement: 'right', html: true, content: $('#popover-target')});
+});
 </script>
 
 <script type="text/javascript">

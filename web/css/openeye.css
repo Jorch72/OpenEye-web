@@ -102,3 +102,16 @@
 .bs-callout-info h4 {
   color: #5bc0de;
 }
+
+#popover-target label {
+  margin: 0 5px;
+  display: block;
+}
+
+#popover-target input {
+  margin-right: 5px;
+}
+
+#popover-target .disabled {
+  color: #ddd;
+}
