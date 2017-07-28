@@ -48,6 +48,15 @@
   {{ files.file_stats(file, "installed", "timesInstall", "firstInstall", "lastInstall") }}
 
   {{ files.file_stats(file, "uninstalled", "timesUninstall", "firstUninstall", "lastUninstall") }}
+  {% set estActive = file.stats['timesInstall'] - file.stats['timesUninstall'] %} 
+  <div class="row">
+    <div class="col-md-3"><abbr title="installed - uninstalled"><strong>Estimated active:</strong></abbr></div>
+    <div class="col-md-9">{{ estActive }}</div>
+  </div>
+  <div class="row">
+    <div class="col-md-3"><abbr title="seen / (installed - uninstalled)"><strong>Estimated startups per user:</strong></abbr></div>
+    <div class="col-md-9">{% if estActive > 0 %}{{ (file.stats['timesSeen'] / estActive) | number_format(2) }}{% else %}N/A{% endif %}</div>
+  </div>
 
   <div class="row">
     <div class="col-md-3"><strong>Seen in:</strong></div>
