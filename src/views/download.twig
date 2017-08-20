@@ -6,7 +6,7 @@
             <h1>About OpenEye</h1>
         </div>
     </div>
-    <div class="col-md-12">
+    <div class="col-md-8" style="margin-bottom:5px;">
 
         <p>Our primary aim is to collect and share vital information to allow us to provide a set of tools to the community to make the experience easier, drama-free and more secure for both users and modders.<p>
         <p>We want to make it clear from the very start that we do this in a completely transparent way - our data is open to anyone and our code is open source. We do not track users or keep any identifying information, and people are very welcome to confirm that for themselves by browsing the code or the regular data dumps that we will provide.</p>
@@ -17,13 +17,19 @@
         <form action="/downloads">
             <input type="hidden" name="mod_version" value="0.8" />
             <select name="mc_version">
-                {% for mc_version in ["1.6.4","1.7.2","1.7.10","1.8","1.8.8","1.8.9","1.9","1.9.4","1.10","1.10.2","1.11","1.11.2","1.12"] %}
+                {% for mc_version in ["1.6.4","1.7.2","1.7.10","1.8","1.8.8","1.8.9","1.9","1.9.4","1.10","1.10.2","1.11","1.11.2","1.12","1.12.1"] %}
                 <option value="{{mc_version}}">OpenEye 0.8 for MC {{mc_version}}</option>
                 {% endfor %}
             </select>
             <input class="btn btn-primary" type="submit" value="Download"/>
         </form>
-
+    </div>
+    <div class="col-md-4">
+        <a href="http://partners.creeper.host/r/openeyexf6" title="Really cool guys for letting us store ~100 GB of crashes">
+            <img src="/img/openeyexf6.png" alt="CreeperHost promo link" style="max-width: 100%"/>
+        </a>
+    </div>
+    <div class="col-md-12">
         <h2>Quick overview</h2>
         <h4 style="margin-top: 40px">Snooper Settings</h4>
         <p>First things first, our mod fully respects a user's snooper settings that are built into Minecraft - so if you don't like it, simply turn it off. However, be aware that turning it off in snooper settings means information we'd need in order to help you would not be available to us.</p>
